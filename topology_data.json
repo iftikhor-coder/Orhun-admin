@@ -1,0 +1,485 @@
+{
+  "generated_at": "2026-05-18T06:51:31.537172",
+  "total_files": 39,
+  "active_files": 38,
+  "placeholder_files": 1,
+  "broken_imports": 0,
+  "supabase_issues": 16,
+  "syntax_issues": 14,
+  "unused_exports": 13,
+  "files": [
+    {
+      "name": "main",
+      "rel": "electron/main.ts",
+      "size": 3926,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "preload",
+      "rel": "electron/preload.ts",
+      "size": 1732,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "secure-storage",
+      "rel": "electron/secure-storage.ts",
+      "size": 7427,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "App",
+      "rel": "src/App.tsx",
+      "size": 2566,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "admin-layout",
+      "rel": "src/components/admin-layout.tsx",
+      "size": 1137,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "feedback-tab",
+      "rel": "src/components/analytics/feedback-tab.tsx",
+      "size": 13413,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "multi-account-tab",
+      "rel": "src/components/analytics/multi-account-tab.tsx",
+      "size": 15562,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "overview-charts",
+      "rel": "src/components/analytics/overview-charts.tsx",
+      "size": 17780,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "genre-editor-modal",
+      "rel": "src/components/genres/genre-editor-modal.tsx",
+      "size": 13747,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [
+          "Qator 100: supabase.from() → try-catch yoki .catch() ichida emas",
+          "Qator 101: supabase.from() → try-catch yoki .catch() ichida emas"
+        ],
+        "syntax": [
+          "'(' yopilmagan (1 ta, qatorlar: [109])",
+          "'{' yopilmagan (1 ta, qatorlar: [62])"
+        ]
+      }
+    },
+    {
+      "name": "preview-card",
+      "rel": "src/components/notifications/preview-card.tsx",
+      "size": 4475,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "protected-route",
+      "rel": "src/components/protected-route.tsx",
+      "size": 1797,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "sidebar",
+      "rel": "src/components/sidebar.tsx",
+      "size": 3897,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "song-details-modal",
+      "rel": "src/components/songs/song-details-modal.tsx",
+      "size": 23842,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [
+          "Qator 494: supabase.rpc() → try-catch yoki .catch() ichida emas",
+          "Qator 520: supabase.rpc() → try-catch yoki .catch() ichida emas",
+          "Qator 550: supabase.rpc() → try-catch yoki .catch() ichida emas"
+        ],
+        "syntax": [
+          "'(' yopilmagan (3 ta, qatorlar: [102, 198, 357])",
+          "'{' yopilmagan (4 ta, qatorlar: [101, 198, 319])"
+        ]
+      }
+    },
+    {
+      "name": "plan-editor-modal",
+      "rel": "src/components/subscriptions/plan-editor-modal.tsx",
+      "size": 18938,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [
+          "Qator 173: supabase.from() → try-catch yoki .catch() ichida emas"
+        ],
+        "syntax": []
+      }
+    },
+    {
+      "name": "badge",
+      "rel": "src/components/ui/badge.tsx",
+      "size": 1150,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "modal",
+      "rel": "src/components/ui/modal.tsx",
+      "size": 2976,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "page-header",
+      "rel": "src/components/ui/page-header.tsx",
+      "size": 1057,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "placeholder-page",
+      "rel": "src/components/ui/placeholder-page.tsx",
+      "size": 1921,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "stat-card",
+      "rel": "src/components/ui/stat-card.tsx",
+      "size": 2841,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "user-details-modal",
+      "rel": "src/components/users/user-details-modal.tsx",
+      "size": 26709,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [
+          "Qator 512: supabase.rpc() → try-catch yoki .catch() ichida emas",
+          "Qator 537: supabase.rpc() → try-catch yoki .catch() ichida emas",
+          "Qator 562: supabase.rpc() → try-catch yoki .catch() ichida emas"
+        ],
+        "syntax": [
+          "'(' yopilmagan (1 ta, qatorlar: [274])",
+          "'{' yopilmagan (1 ta, qatorlar: [208])"
+        ]
+      }
+    },
+    {
+      "name": "api",
+      "rel": "src/lib/api.ts",
+      "size": 1613,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "auth",
+      "rel": "src/lib/auth.ts",
+      "size": 7000,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "local-auth",
+      "rel": "src/lib/local-auth.ts",
+      "size": 3554,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "supabase",
+      "rel": "src/lib/supabase.ts",
+      "size": 1067,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "utils",
+      "rel": "src/lib/utils.ts",
+      "size": 1420,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "main",
+      "rel": "src/main.tsx",
+      "size": 409,
+      "active": false,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "analytics",
+      "rel": "src/routes/analytics.tsx",
+      "size": 2446,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "dashboard",
+      "rel": "src/routes/dashboard.tsx",
+      "size": 15114,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "genres",
+      "rel": "src/routes/genres.tsx",
+      "size": 16401,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [
+          "Qator 83: supabase.from() → try-catch yoki .catch() ichida emas",
+          "Qator 93: supabase.from() → try-catch yoki .catch() ichida emas",
+          "Qator 126: supabase.rpc() → try-catch yoki .catch() ichida emas"
+        ],
+        "syntax": [
+          "'{' yopilmagan (1 ta, qatorlar: [22])"
+        ]
+      }
+    },
+    {
+      "name": "login",
+      "rel": "src/routes/login.tsx",
+      "size": 6390,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": [
+          "'(' yopilmagan (1 ta, qatorlar: [70])",
+          "'{' yopilmagan (1 ta, qatorlar: [8])"
+        ]
+      }
+    },
+    {
+      "name": "notifications",
+      "rel": "src/routes/notifications.tsx",
+      "size": 24033,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [
+          "Qator 85: supabase.rpc() → try-catch yoki .catch() ichida emas",
+          "Qator 121: supabase.rpc() → try-catch yoki .catch() ichida emas"
+        ],
+        "syntax": [
+          "'(' yopilmagan (1 ta, qatorlar: [156])",
+          "'{' yopilmagan (1 ta, qatorlar: [56])"
+        ]
+      }
+    },
+    {
+      "name": "pin-login",
+      "rel": "src/routes/pin-login.tsx",
+      "size": 6581,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "pin-setup",
+      "rel": "src/routes/pin-setup.tsx",
+      "size": 7268,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": [
+          "'(' yopilmagan (2 ta, qatorlar: [51, 115])",
+          "'{' yopilmagan (2 ta, qatorlar: [15, 108])"
+        ]
+      }
+    },
+    {
+      "name": "songs",
+      "rel": "src/routes/songs.tsx",
+      "size": 15103,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "subscriptions",
+      "rel": "src/routes/subscriptions.tsx",
+      "size": 17736,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [
+          "Qator 122: supabase.from() → try-catch yoki .catch() ichida emas"
+        ],
+        "syntax": [
+          "Qator 317: ortiqcha '}' (juftisiz yopuvchi)"
+        ]
+      }
+    },
+    {
+      "name": "users",
+      "rel": "src/routes/users.tsx",
+      "size": 10658,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "vite-env.d",
+      "rel": "src/vite-env.d.ts",
+      "size": 1130,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "tailwind.config",
+      "rel": "tailwind.config.ts",
+      "size": 2423,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    },
+    {
+      "name": "vite.config",
+      "rel": "vite.config.ts",
+      "size": 1366,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": []
+      }
+    }
+  ]
+}
