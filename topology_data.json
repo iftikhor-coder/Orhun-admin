@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-05-18T06:51:31.537172",
-  "total_files": 39,
-  "active_files": 38,
-  "placeholder_files": 1,
+  "generated_at": "2026-05-23T13:23:25.377988",
+  "total_files": 42,
+  "active_files": 40,
+  "placeholder_files": 2,
   "broken_imports": 0,
   "supabase_issues": 16,
-  "syntax_issues": 14,
-  "unused_exports": 13,
+  "syntax_issues": 26,
+  "unused_exports": 15,
   "files": [
     {
       "name": "main",
       "rel": "electron/main.ts",
-      "size": 3926,
+      "size": 4403,
       "active": true,
       "issues": {
         "broken": [],
@@ -22,7 +22,7 @@
     {
       "name": "preload",
       "rel": "electron/preload.ts",
-      "size": 1732,
+      "size": 2289,
       "active": true,
       "issues": {
         "broken": [],
@@ -33,7 +33,7 @@
     {
       "name": "secure-storage",
       "rel": "electron/secure-storage.ts",
-      "size": 7427,
+      "size": 7449,
       "active": true,
       "issues": {
         "broken": [],
@@ -44,7 +44,7 @@
     {
       "name": "App",
       "rel": "src/App.tsx",
-      "size": 2566,
+      "size": 2313,
       "active": true,
       "issues": {
         "broken": [],
@@ -88,12 +88,15 @@
     {
       "name": "overview-charts",
       "rel": "src/components/analytics/overview-charts.tsx",
-      "size": 17780,
+      "size": 21176,
       "active": true,
       "issues": {
         "broken": [],
         "supabase": [],
-        "syntax": []
+        "syntax": [
+          "'(' yopilmagan (8 ta, qatorlar: [397, 403, 405])",
+          "'{' yopilmagan (5 ta, qatorlar: [369, 399, 405])"
+        ]
       }
     },
     {
@@ -127,7 +130,7 @@
     {
       "name": "protected-route",
       "rel": "src/components/protected-route.tsx",
-      "size": 1797,
+      "size": 1110,
       "active": true,
       "issues": {
         "broken": [],
@@ -138,7 +141,7 @@
     {
       "name": "sidebar",
       "rel": "src/components/sidebar.tsx",
-      "size": 3897,
+      "size": 3963,
       "active": true,
       "issues": {
         "broken": [],
@@ -235,18 +238,46 @@
     {
       "name": "user-details-modal",
       "rel": "src/components/users/user-details-modal.tsx",
-      "size": 26709,
+      "size": 28293,
       "active": true,
       "issues": {
         "broken": [],
         "supabase": [
-          "Qator 512: supabase.rpc() → try-catch yoki .catch() ichida emas",
-          "Qator 537: supabase.rpc() → try-catch yoki .catch() ichida emas",
-          "Qator 562: supabase.rpc() → try-catch yoki .catch() ichida emas"
+          "Qator 550: supabase.rpc() → try-catch yoki .catch() ichida emas",
+          "Qator 575: supabase.rpc() → try-catch yoki .catch() ichida emas",
+          "Qator 600: supabase.rpc() → try-catch yoki .catch() ichida emas"
         ],
         "syntax": [
-          "'(' yopilmagan (1 ta, qatorlar: [274])",
-          "'{' yopilmagan (1 ta, qatorlar: [208])"
+          "Qator 276: ortiqcha ')' (juftisiz yopuvchi)",
+          "Qator 279: ortiqcha '}' (juftisiz yopuvchi)",
+          "Qator 279: ortiqcha ')' (juftisiz yopuvchi)"
+        ]
+      }
+    },
+    {
+      "name": "user-location-tab",
+      "rel": "src/components/users/user-location-tab.tsx",
+      "size": 8288,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": [
+          "'(' yopilmagan (1 ta, qatorlar: [96])",
+          "'{' yopilmagan (1 ta, qatorlar: [45])"
+        ]
+      }
+    },
+    {
+      "name": "user-songs-tab",
+      "rel": "src/components/users/user-songs-tab.tsx",
+      "size": 6491,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": [
+          "'{' yopilmagan (1 ta, qatorlar: [38])"
         ]
       }
     },
@@ -264,7 +295,7 @@
     {
       "name": "auth",
       "rel": "src/lib/auth.ts",
-      "size": 7000,
+      "size": 7180,
       "active": true,
       "issues": {
         "broken": [],
@@ -328,6 +359,20 @@
       }
     },
     {
+      "name": "countries",
+      "rel": "src/routes/countries.tsx",
+      "size": 20992,
+      "active": true,
+      "issues": {
+        "broken": [],
+        "supabase": [],
+        "syntax": [
+          "'(' yopilmagan (8 ta, qatorlar: [269, 343, 345])",
+          "'{' yopilmagan (7 ta, qatorlar: [115, 331, 345])"
+        ]
+      }
+    },
+    {
       "name": "dashboard",
       "rel": "src/routes/dashboard.tsx",
       "size": 15114,
@@ -358,14 +403,14 @@
     {
       "name": "login",
       "rel": "src/routes/login.tsx",
-      "size": 6390,
+      "size": 6107,
       "active": true,
       "issues": {
         "broken": [],
         "supabase": [],
         "syntax": [
-          "'(' yopilmagan (1 ta, qatorlar: [70])",
-          "'{' yopilmagan (1 ta, qatorlar: [8])"
+          "'(' yopilmagan (1 ta, qatorlar: [74])",
+          "'{' yopilmagan (1 ta, qatorlar: [7])"
         ]
       }
     },
@@ -389,7 +434,7 @@
     {
       "name": "pin-login",
       "rel": "src/routes/pin-login.tsx",
-      "size": 6581,
+      "size": 7933,
       "active": true,
       "issues": {
         "broken": [],
@@ -400,14 +445,14 @@
     {
       "name": "pin-setup",
       "rel": "src/routes/pin-setup.tsx",
-      "size": 7268,
+      "size": 10615,
       "active": true,
       "issues": {
         "broken": [],
         "supabase": [],
         "syntax": [
-          "'(' yopilmagan (2 ta, qatorlar: [51, 115])",
-          "'{' yopilmagan (2 ta, qatorlar: [15, 108])"
+          "'(' yopilmagan (2 ta, qatorlar: [89, 194])",
+          "'{' yopilmagan (2 ta, qatorlar: [16, 120])"
         ]
       }
     },
@@ -440,7 +485,7 @@
     {
       "name": "users",
       "rel": "src/routes/users.tsx",
-      "size": 10658,
+      "size": 10795,
       "active": true,
       "issues": {
         "broken": [],
@@ -473,8 +518,8 @@
     {
       "name": "vite.config",
       "rel": "vite.config.ts",
-      "size": 1366,
-      "active": true,
+      "size": 863,
+      "active": false,
       "issues": {
         "broken": [],
         "supabase": [],

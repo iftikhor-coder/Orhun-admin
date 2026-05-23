@@ -51,4 +51,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
     resetAll: (): Promise<void> =>
       ipcRenderer.invoke('secure:resetAll'),
   },
+
+  // IP Geolocation (main process — CSP cheklovisiz)
+  getGeo: (ip: string): Promise<{latitude: number; longitude: number; city: string; region: string; country_name: string; country_code: string; timezone: string; org: string; postal: string;} | null> =>
+    ipcRenderer.invoke("app:get-geo", ip),
+
+  // Xarita oynasi (alohida Electron oynasi)
+  openMap: (lat: number, lng: number, label: string, ip = '', city = '', country = '', org = '', tz = ''): Promise<void> =>
+    ipcRenderer.invoke('app:open-map', lat, lng, label, ip, city, country, org, tz),
 });

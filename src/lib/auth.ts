@@ -68,7 +68,9 @@ export const useAuth = create<AuthState>((set, get) => ({
     // Boshlang'ich session'ni faqat shu yerda o'qiymiz, listener'siz.
     set({ loading: true });
     try {
+      console.log("[auth] getSession BOSHLANDI");
       const { data: { session } } = await supabase.auth.getSession();
+      console.log("[auth] getSession TUGADI", session?.user?.email);
       if (session?.user) {
         set({ user: session.user });
         // refreshProfile NI BU YERDA CHAQIRMAYMIZ —
@@ -78,6 +80,7 @@ export const useAuth = create<AuthState>((set, get) => ({
       console.error('[auth] init xatosi:', e);
     } finally {
       set({ loading: false, initialized: true });
+      console.log("[auth] init DONE — initialized: true");
     }
 
     // Faqat SIGNED_OUT event'iga reaksiya qilamiz (logout uchun).

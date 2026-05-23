@@ -1,79 +1,82 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Shield, Loader2, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
-import { useLocalAuth } from '@/lib/local-auth';
 import { cn } from '@/lib/utils';
 
 export function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { signIn } = useAuth();
-  const localAuth = useLocalAuth();
 
-  const [email, setEmail] = useState('');
+  const [email,    setEmail]    = useState('');
   const [password, setPassword] = useState('');
-  const [showPwd, setShowPwd] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [showPwd,  setShowPwd]  = useState(false);
+  const [loading,  setLoading]  = useState(false);
+  const [checking, setChecking] = useState(true); // PIN mavjudligini tekshirish
+  const [error,    setError]    = useState('');
 
+  const from = (location.state as any)?.from?.pathname || '/dashboard';
+
+  // App ochilganda: PIN o'rnatilgan bo'lsa → pin-login'ga yo'naltirish
   useEffect(() => {
-    (async () => {
-      const last = await window.electronAPI?.secure.getLastEmail();
-      if (last) setEmail(last);
-    })();
-  }, []);
+    const checkPin = async () => {
+      try {
+        const completed = await window.electronAPI?.secure?.isSetupCompleted?.();
+        if (completed) {
+          navigate('/pin-login', { replace: true });
+          return;
+        }
+      } catch {
+        // electronAPI mavjud emas (web mode) — davom etamiz
+      } finally {
+        setChecking(false);
+      }
+    };
+    checkPin();
+  }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    try {
-      console.log('[Login] 1. signIn boshlandi');
-      const result = await signIn(email.trim(), password);
-      console.log('[Login] 2. signIn natija:', result);
+    const result = await signIn(email.trim(), password);
+    setLoading(false);
 
-      if (!result.ok) {
-        setError(result.error || 'Kirish amalga oshmadi');
-        setLoading(false);
-        return;
+    if (result.ok) {
+      // PIN o'rnatilganmi tekshiramiz
+      try {
+        const pinSetup = await window.electronAPI?.secure?.isSetupCompleted?.();
+        if (!pinSetup) {
+          // Birinchi kirish — PIN o'rnatishga yo'naltir
+          navigate('/pin-setup', { replace: true });
+        } else {
+          navigate(from, { replace: true });
+        }
+      } catch {
+        navigate(from, { replace: true });
       }
-
-      console.log('[Login] 3. electronAPI mavjudligini tekshiraman');
-      if (!window.electronAPI?.secure) {
-        console.error('[Login] electronAPI YOQ!');
-        setError('electronAPI mavjud emas. Dasturni qayta ishga tushiring.');
-        setLoading(false);
-        return;
-      }
-
-      console.log('[Login] 4. isSetupCompleted soraymen');
-      const setupCompleted = await window.electronAPI.secure.isSetupCompleted();
-      console.log('[Login] 5. setupCompleted:', setupCompleted);
-
-      if (setupCompleted) {
-        console.log('[Login] 6a. PIN bor, /dashboard ga');
-        localAuth.setStage('authenticated');
-        navigate('/dashboard', { replace: true });
-      } else {
-        console.log('[Login] 6b. PIN yoq, /pin-setup ga');
-        navigate('/pin-setup', { replace: true });
-      }
-    } catch (err: any) {
-      console.error('[Login] CATCH xato:', err);
-      setError(err?.message || 'Kutilmagan xato yuz berdi');
-    } finally {
-      setLoading(false);
+    } else {
+      setError(result.error || 'Kirish amalga oshmadi');
     }
   };
+
+  // PIN tekshirilayotgan vaqtda yoki pin-login ga yo'naltirish jarayonida
+  if (checking) {
+    return (
+      <div className="grid h-screen w-screen place-items-center bg-midnight-950">
+        <Loader2 className="h-6 w-6 animate-spin text-gold-700" />
+      </div>
+    );
+  }
 
   return (
     <div className="grid h-screen w-screen place-items-center bg-midnight-950 p-6">
       <div
         className="pointer-events-none absolute inset-0 opacity-30"
         style={{
-          background:
-            'radial-gradient(circle at 50% 30%, rgba(220, 38, 38, 0.15) 0%, transparent 60%)',
+          background: 'radial-gradient(circle at 50% 30%, rgba(220, 38, 38, 0.15) 0%, transparent 60%)',
         }}
       />
 
@@ -81,54 +84,38 @@ export function LoginPage() {
         onSubmit={handleSubmit}
         className="relative z-10 w-full max-w-md rounded-2xl border border-admin-900/30 bg-midnight-900/80 p-8 shadow-2xl shadow-black/60 backdrop-blur-xl"
       >
+        {/* Brand */}
         <div className="mb-7 flex flex-col items-center text-center">
           <div className="mb-4 grid h-14 w-14 place-items-center rounded-xl bg-gradient-admin shadow-lg shadow-admin-900/40">
             <Shield className="h-7 w-7 text-white" />
           </div>
-          <h1 className="font-display text-2xl font-bold text-gold-100">
-            Orhun AI Admin
-          </h1>
-          <p className="mt-1 text-xs uppercase tracking-[0.3em] text-admin-400">
-            Restricted Access
-          </p>
+          <h1 className="font-display text-2xl font-bold text-gold-100">Orhun AI Admin</h1>
+          <p className="mt-1 text-xs uppercase tracking-[0.3em] text-admin-400">Restricted Access</p>
         </div>
 
+        {/* Email */}
         <label className="mb-4 block">
-          <span className="mb-1.5 block text-xs uppercase tracking-wider text-gold-700">
-            Email
-          </span>
+          <span className="mb-1.5 block text-xs uppercase tracking-wider text-gold-700">Email</span>
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            autoFocus
-            disabled={loading}
+            type="email" value={email} onChange={e => setEmail(e.target.value)}
+            required autoFocus disabled={loading}
             placeholder="admin@example.com"
             className="w-full rounded-lg border border-gold-900/40 bg-midnight-800/60 px-3 py-2.5 text-sm text-gold-100 placeholder:text-gold-700/40 focus:border-admin-500/60 focus:outline-none disabled:opacity-50"
           />
         </label>
 
+        {/* Parol */}
         <label className="mb-2 block">
-          <span className="mb-1.5 block text-xs uppercase tracking-wider text-gold-700">
-            Parol
-          </span>
+          <span className="mb-1.5 block text-xs uppercase tracking-wider text-gold-700">Parol</span>
           <div className="relative">
             <input
-              type={showPwd ? 'text' : 'password'}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              disabled={loading}
-              placeholder="••••••••"
+              type={showPwd ? 'text' : 'password'} value={password}
+              onChange={e => setPassword(e.target.value)}
+              required disabled={loading} placeholder="••••••••"
               className="w-full rounded-lg border border-gold-900/40 bg-midnight-800/60 px-3 py-2.5 pr-10 text-sm text-gold-100 placeholder:text-gold-700/40 focus:border-admin-500/60 focus:outline-none disabled:opacity-50"
             />
-            <button
-              type="button"
-              onClick={() => setShowPwd((v) => !v)}
-              className="absolute right-2 top-1/2 grid h-7 w-7 -translate-y-1/2 place-items-center rounded text-gold-700 transition-colors hover:bg-midnight-700/50 hover:text-gold-300"
-              aria-label="Toggle password"
-            >
+            <button type="button" onClick={() => setShowPwd(v => !v)}
+              className="absolute right-2 top-1/2 grid h-7 w-7 -translate-y-1/2 place-items-center rounded text-gold-700 hover:text-gold-300">
               {showPwd ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
             </button>
           </div>
@@ -142,8 +129,7 @@ export function LoginPage() {
         )}
 
         <button
-          type="submit"
-          disabled={loading || !email || !password}
+          type="submit" disabled={loading || !email || !password}
           className={cn(
             'mt-4 flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all',
             'bg-gradient-admin text-white shadow-lg shadow-admin-900/40',
@@ -152,10 +138,7 @@ export function LoginPage() {
           )}
         >
           {loading ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Tekshirilmoqda...
-            </>
+            <><Loader2 className="h-4 w-4 animate-spin" />Tekshirilmoqda...</>
           ) : (
             'Kirish'
           )}
@@ -163,7 +146,7 @@ export function LoginPage() {
 
         <p className="mt-6 text-center text-[11px] text-gold-700/60">
           Faqat administrator huquqi bor foydalanuvchilar kirishi mumkin.
-          Birinchi marta kirgandan keyin 4 raqamli PIN o'rnatasiz.
+          Birinchi marta kirgandan keyin 8 belgili PIN o'rnatasiz.
         </p>
       </form>
     </div>

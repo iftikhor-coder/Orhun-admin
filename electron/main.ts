@@ -23,7 +23,7 @@ function createWindow() {
     icon: path.join(VITE_PUBLIC, 'icon.png'),
     autoHideMenuBar: true,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload.mjs'),
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: true,
@@ -63,6 +63,76 @@ ipcMain.handle('secure:saveSession',   (_e, sessionJson: string) => secureStorag
 ipcMain.handle('secure:loadSession',   () => secureStorage.loadSession());
 ipcMain.handle('secure:clearSession',  () => secureStorage.clearSession());
 ipcMain.handle('secure:resetAll',      () => secureStorage.resetAll());
+
+
+
+// === IP Geolocation (main process — CSP yo'q, https module) ===
+ipcMain.handle('app:get-geo', (_e, ip: string) => {
+  return new Promise((resolve) => {
+    console.log('[geo] IP:', ip);
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const http = require('http');
+    // ip-api.com — tekin, tezkor, HTTPS shart emas
+    const url = 'http://ip-api.com/json/' + ip +
+      '?fields=status,country,countryCode,regionName,city,zip,lat,lon,timezone,isp,org';
+    const req = http.get(url, (res: any) => {
+      let raw = '';
+      res.on('data', (c: string) => { raw += c; });
+      res.on('end', () => {
+        try {
+          const d = JSON.parse(raw);
+          console.log('[geo] Natija:', d.status, d.city, d.country);
+          if (d.status !== 'success') { resolve(null); return; }
+          resolve({
+            latitude:     d.lat,
+            longitude:    d.lon,
+            city:         d.city         || '',
+            region:       d.regionName   || '',
+            country_name: d.country      || '',
+            country_code: d.countryCode  || '',
+            timezone:     d.timezone     || '',
+            org:          d.org || d.isp || '',
+            postal:       d.zip          || '',
+          });
+        } catch { resolve(null); }
+      });
+    });
+    req.on('error', (e: any) => {
+      console.log('[geo] Xato:', e.message);
+      resolve(null);
+    });
+    req.setTimeout(8000, () => { req.destroy(); resolve(null); });
+  });
+});
+
+// === Map oynasi ===
+ipcMain.handle('app:open-map', (
+  _e, lat: number, lng: number, label: string,
+  ip = '', city = '', country = '', org = '', tz = ''
+) => {
+  const q = new URLSearchParams({
+    lat: String(lat), lng: String(lng), label,
+    ip, city, country, org, tz, zoom: '13',
+  }).toString();
+
+  const mapWin = new BrowserWindow({
+    width: 1280, height: 820,
+    title: 'Orhun AI — ' + label,
+    autoHideMenuBar: true,
+    backgroundColor: '#060b1a',
+    webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: true,
+      sandbox: false,
+    },
+  });
+
+  if (VITE_DEV_SERVER_URL) {
+    mapWin.loadURL(VITE_DEV_SERVER_URL.replace(/\/$/, '') + '/map.html?' + q);
+  } else {
+    mapWin.loadFile(path.join(VITE_PUBLIC, 'map.html'), { query: { lat: String(lat), lng: String(lng), label, ip, city, country, org, tz, zoom: '13' } });
+  }
+});
 
 // === App lifecycle ===
 app.whenReady().then(() => {

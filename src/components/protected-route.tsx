@@ -1,19 +1,13 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
-import { useLocalAuth } from '@/lib/local-auth';
 
 /**
  * ProtectedRoute — auth middleware
  * --------------------------------
- * Local auth stage'iga qarab navigatsiya qiladi:
- *   - 'loading'        → spinner
- *   - 'first-time'     → /login (Supabase email/parol)
- *   - 'pin-required'   → /pin-login (faqat PIN)
- *   - 'authenticated'  → user va profile ham bormi tekshirib, davom
- *
- * Bu komponent /dashboard, /users, va boshqa himoyalangan sahifalar
- * uchun wrapper sifatida ishlatiladi.
+ * 1) Auth tekshiruv yakunlanmasa — spinner
+ * 2) User yoʻq yoki is_admin = false → /login ga redirect
+ * 3) Aks holda children render
  */
 
 interface Props {
@@ -22,11 +16,11 @@ interface Props {
 
 export function ProtectedRoute({ children }: Props) {
   const { user, profile, initialized } = useAuth();
-  const { stage } = useLocalAuth();
   const location = useLocation();
 
-  // Boshlang'ich yuklash
-  if (!initialized || stage === 'loading') {
+  console.log("[PR]", { initialized, user: !!user, isAdmin: profile?.is_admin });
+
+  if (!initialized) {
     return (
       <div className="grid h-screen w-screen place-items-center bg-midnight-950">
         <div className="flex items-center gap-3 text-gold-300">
@@ -37,17 +31,6 @@ export function ProtectedRoute({ children }: Props) {
     );
   }
 
-  // Hech narsa o'rnatilmagan → email/parol kirish
-  if (stage === 'first-time') {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
-
-  // PIN o'rnatilgan, lekin hali kiritilmagan
-  if (stage === 'pin-required') {
-    return <Navigate to="/pin-login" state={{ from: location }} replace />;
-  }
-
-  // PIN to'g'ri, lekin Supabase user/admin yo'q → restartdan keyin login
   if (!user || !profile?.is_admin) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }

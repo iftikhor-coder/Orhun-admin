@@ -14,6 +14,8 @@ import { SubscriptionsPage } from '@/routes/subscriptions';
 import { GenresPage } from '@/routes/genres';
 import { AnalyticsPage } from '@/routes/analytics';
 import { CountriesPage } from '@/routes/countries';
+import { PinSetupPage } from '@/routes/pin-setup';
+import { PinLoginPage } from '@/routes/pin-login';
 
 /**
  * App — asosiy router
@@ -33,8 +35,10 @@ export default function App() {
 
   return (
     <Routes>
-      {/* Ochiq route */}
+      {/* Ochiq routelar */}
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/pin-setup" element={<PinSetupPage />} />
+      <Route path="/pin-login" element={<PinLoginPage />} />
 
       {/* Himoyalangan route'lar */}
       <Route

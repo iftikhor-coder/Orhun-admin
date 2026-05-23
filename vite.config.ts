@@ -37,18 +37,6 @@ export default defineConfig({
   server: {
     port: 5180,
     strictPort: true,
-    headers: {
-      'Content-Security-Policy': [
-        "default-src 'self'",
-        "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
-        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-        "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://ipapi.co https://maps.google.com",
-        "media-src 'self' https://*.supabase.co blob: data:",
-        "img-src 'self' data: https: blob:",
-        "frame-src https://maps.google.com",
-        "worker-src blob:",
-      ].join('; '),
-    },
   },
   build: {
     outDir: 'dist',

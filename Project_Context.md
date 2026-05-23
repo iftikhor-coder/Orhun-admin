@@ -3,17 +3,17 @@ tags:
   - admin-panel
   - topology
   - auto-generated
-date: 2026-05-18
-updated: 2026-05-18 06:51:31
-health: "🔴 30 muammo"
+date: 2026-05-23
+updated: 2026-05-23 13:23:25
+health: "🔴 42 muammo"
 ---
 
 # 🗂️ Orhun AI Admin Panel — Loyiha Topologiyasi
 
 > [!info] Avtomatik yaratilgan
 > Ushbu fayl `generate_topology.py` tomonidan yaratiladi.  
-> **Oxirgi yangilanish:** `2026-05-18 06:51:31`  
-> **Loyiha holati:** 🔴 30 muammo topildi
+> **Oxirgi yangilanish:** `2026-05-23 13:23:25`  
+> **Loyiha holati:** 🔴 42 muammo topildi
 
 ---
 
@@ -21,13 +21,13 @@ health: "🔴 30 muammo"
 
 | Ko'rsatkich | Qiymat | Holat |
 |---|:---:|---|
-| 📁 Jami fayllar | **39** | — |
-| ✅ Amalga oshirilgan (>1 KB) | **38** | OK |
-| ❌ Placeholder (≤1 KB) | **1** | ⚠️ Diqqat |
+| 📁 Jami fayllar | **42** | — |
+| ✅ Amalga oshirilgan (>1 KB) | **40** | OK |
+| ❌ Placeholder (≤1 KB) | **2** | ⚠️ Diqqat |
 | 🔴 Broken Import | **0** | ✅ OK |
 | 🔶 Supabase xavfsizlik | **16** | ⚠️ Tekshiring |
-| 🔵 Sintaksis xatosi | **14** | 🚨 Xato bor |
-| 🟡 Ishlatilmagan eksport | **13** | ⚠️ Tozalang |
+| 🔵 Sintaksis xatosi | **26** | 🚨 Xato bor |
+| 🟡 Ishlatilmagan eksport | **15** | ⚠️ Tozalang |
 
 ---
 
@@ -36,7 +36,7 @@ health: "🔴 30 muammo"
 | Faza | Modul | Fayl | Holat |
 |---|---|---|:---:|
 | Faza 1 | Dashboard | [[dashboard]] `14.8 KB` | ✅ |
-| Faza 2 | Foydalanuvchilar | [[users]] `10.4 KB` | ✅ |
+| Faza 2 | Foydalanuvchilar | [[users]] `10.5 KB` | ✅ |
 | Faza 3 | Broadcast | [[notifications]] `23.5 KB` | ✅ 🔴4 |
 | Faza 4 | Obuna tariflari | [[subscriptions]] `17.3 KB` | ✅ 🔴2 |
 | Faza 5 | Qo'shiqlar moderatsiyasi | [[songs]] `14.7 KB` | ✅ |
@@ -49,18 +49,18 @@ health: "🔴 30 muammo"
 
 | Holat | Fayl | Hajm | Xatolar |
 |:---:|---|---:|:---:|
-| ✅ | [[main]] | 3.8 KB | ✓ |
-| ✅ | [[preload]] | 1.7 KB | ✓ |
+| ✅ | [[main]] | 4.3 KB | ✓ |
+| ✅ | [[preload]] | 2.2 KB | ✓ |
 | ✅ | [[secure-storage]] | 7.3 KB | ✓ |
-| ✅ | [[App]] | 2.5 KB | ✓ |
+| ✅ | [[App]] | 2.3 KB | ✓ |
 | ✅ | [[admin-layout]] | 1.1 KB | ✓ |
 | ✅ | [[feedback-tab]] | 13.1 KB | ✓ |
 | ✅ | [[multi-account-tab]] | 15.2 KB | ✓ |
-| ✅ | [[overview-charts]] | 17.4 KB | ✓ |
+| ✅ | [[overview-charts]] | 20.7 KB | 🔴 2 |
 | ✅ | [[genre-editor-modal]] | 13.4 KB | 🔴 4 |
 | ✅ | [[preview-card]] | 4.4 KB | ✓ |
-| ✅ | [[protected-route]] | 1.8 KB | ✓ |
-| ✅ | [[sidebar]] | 3.8 KB | ✓ |
+| ✅ | [[protected-route]] | 1.1 KB | ✓ |
+| ✅ | [[sidebar]] | 3.9 KB | ✓ |
 | ✅ | [[song-details-modal]] | 23.3 KB | 🔴 5 |
 | ✅ | [[plan-editor-modal]] | 18.5 KB | 🔴 1 |
 | ✅ | [[badge]] | 1.1 KB | ✓ |
@@ -68,26 +68,29 @@ health: "🔴 30 muammo"
 | ✅ | [[page-header]] | 1.0 KB | ✓ |
 | ✅ | [[placeholder-page]] | 1.9 KB | ✓ |
 | ✅ | [[stat-card]] | 2.8 KB | ✓ |
-| ✅ | [[user-details-modal]] | 26.1 KB | 🔴 6 |
+| ✅ | [[user-details-modal]] | 27.6 KB | 🔴 11 |
+| ✅ | [[user-location-tab]] | 8.1 KB | 🔴 2 |
+| ✅ | [[user-songs-tab]] | 6.3 KB | 🔴 1 |
 | ✅ | [[api]] | 1.6 KB | ✓ |
-| ✅ | [[auth]] | 6.8 KB | ✓ |
+| ✅ | [[auth]] | 7.0 KB | ✓ |
 | ✅ | [[local-auth]] | 3.5 KB | ✓ |
 | ✅ | [[supabase]] | 1.0 KB | ✓ |
 | ✅ | [[utils]] | 1.4 KB | ✓ |
 | ❌ | [[main]] | 0.4 KB | ✓ |
 | ✅ | [[analytics]] | 2.4 KB | ✓ |
+| ✅ | [[countries]] | 20.5 KB | 🔴 2 |
 | ✅ | [[dashboard]] | 14.8 KB | ✓ |
 | ✅ | [[genres]] | 16.0 KB | 🔴 4 |
-| ✅ | [[login]] | 6.2 KB | 🔴 2 |
+| ✅ | [[login]] | 6.0 KB | 🔴 2 |
 | ✅ | [[notifications]] | 23.5 KB | 🔴 4 |
-| ✅ | [[pin-login]] | 6.4 KB | ✓ |
-| ✅ | [[pin-setup]] | 7.1 KB | 🔴 2 |
+| ✅ | [[pin-login]] | 7.7 KB | ✓ |
+| ✅ | [[pin-setup]] | 10.4 KB | 🔴 2 |
 | ✅ | [[songs]] | 14.7 KB | ✓ |
 | ✅ | [[subscriptions]] | 17.3 KB | 🔴 2 |
-| ✅ | [[users]] | 10.4 KB | ✓ |
+| ✅ | [[users]] | 10.5 KB | ✓ |
 | ✅ | [[vite-env.d]] | 1.1 KB | ✓ |
 | ✅ | [[tailwind.config]] | 2.4 KB | ✓ |
-| ✅ | [[vite.config]] | 1.3 KB | ✓ |
+| ❌ | [[vite.config]] | 0.8 KB | ✓ |
 
 ---
 
@@ -105,17 +108,16 @@ health: "🔴 30 muammo"
 ### `📁 root/`
 
 - [[tailwind.config]]
-- [[vite.config]]
 
 ### `📁 src/`
 
-- [[App]] → [[auth]], [[local-auth]], [[admin-layout]], [[protected-route]], [[login]], [[pin-setup]], [[pin-login]], [[dashboard]], [[users]], [[songs]]
+- [[App]] → [[auth]], [[admin-layout]], [[protected-route]], [[login]], [[dashboard]], [[users]], [[songs]], [[notifications]], [[subscriptions]], [[genres]]
 - [[vite-env.d]]
 
 ### `📁 src/components/`
 
 - [[admin-layout]] → [[sidebar]]
-- [[protected-route]] → [[auth]], [[local-auth]]
+- [[protected-route]] → [[auth]]
 - [[sidebar]] → [[auth]], [[utils]]
 
 ### `📁 src/components/analytics/`
@@ -151,6 +153,8 @@ health: "🔴 30 muammo"
 ### `📁 src/components/users/`
 
 - [[user-details-modal]] → [[supabase]], [[auth]], [[modal]], [[badge]], [[utils]]
+- [[user-location-tab]] → [[utils]]
+- [[user-songs-tab]] → [[supabase]], [[utils]], [[badge]]
 
 ### `📁 src/lib/`
 
@@ -163,11 +167,12 @@ health: "🔴 30 muammo"
 ### `📁 src/routes/`
 
 - [[analytics]] → [[page-header]], [[overview-charts]], [[multi-account-tab]], [[feedback-tab]], [[utils]]
+- [[countries]] → [[supabase]], [[page-header]], [[utils]]
 - [[dashboard]] → [[supabase]], [[page-header]], [[stat-card]], [[utils]]
 - [[genres]] → [[supabase]], [[page-header]], [[badge]], [[modal]], [[genre-editor-modal]], [[utils]]
-- [[login]] → [[auth]], [[local-auth]], [[utils]]
+- [[login]] → [[auth]], [[utils]]
 - [[notifications]] → [[supabase]], [[page-header]], [[badge]], [[modal]], [[preview-card]], [[utils]]
-- [[pin-login]] → [[auth]], [[local-auth]], [[pin-setup]], [[utils]]
+- [[pin-login]] → [[auth]], [[local-auth]], [[utils]]
 - [[pin-setup]] → [[auth]], [[local-auth]], [[utils]]
 - [[songs]] → [[supabase]], [[page-header]], [[badge]], [[song-details-modal]], [[utils]]
 - [[subscriptions]] → [[supabase]], [[page-header]], [[badge]], [[modal]], [[plan-editor-modal]], [[utils]]
@@ -196,10 +201,10 @@ health: "🔴 30 muammo"
 > - ⚠️ `Qator 173: supabase.from() → try-catch yoki .catch() ichida emas`
 
 > **[[user-details-modal]]**
-> - ⚠️ `Qator 512: supabase.rpc() → try-catch yoki .catch() ichida emas`
-> - ⚠️ `Qator 537: supabase.rpc() → try-catch yoki .catch() ichida emas`
-> - ⚠️ `Qator 562: supabase.rpc() → try-catch yoki .catch() ichida emas`
-> - ⚠️ `Qator 584: supabase.rpc() → try-catch yoki .catch() ichida emas`
+> - ⚠️ `Qator 550: supabase.rpc() → try-catch yoki .catch() ichida emas`
+> - ⚠️ `Qator 575: supabase.rpc() → try-catch yoki .catch() ichida emas`
+> - ⚠️ `Qator 600: supabase.rpc() → try-catch yoki .catch() ichida emas`
+> - ⚠️ `Qator 622: supabase.rpc() → try-catch yoki .catch() ichida emas`
 
 > **[[genres]]**
 > - ⚠️ `Qator 83: supabase.from() → try-catch yoki .catch() ichida emas`
@@ -215,6 +220,10 @@ health: "🔴 30 muammo"
 
 ### 🔵 Sintaksis Xatolari
 
+> **[[overview-charts]]**
+> - 🔵 `'(' yopilmagan (8 ta, qatorlar: [397, 403, 405])`
+> - 🔵 `'{' yopilmagan (5 ta, qatorlar: [369, 399, 405])`
+
 > **[[genre-editor-modal]]**
 > - 🔵 `'(' yopilmagan (1 ta, qatorlar: [109])`
 > - 🔵 `'{' yopilmagan (1 ta, qatorlar: [62])`
@@ -224,23 +233,37 @@ health: "🔴 30 muammo"
 > - 🔵 `'{' yopilmagan (4 ta, qatorlar: [101, 198, 319])`
 
 > **[[user-details-modal]]**
-> - 🔵 `'(' yopilmagan (1 ta, qatorlar: [274])`
-> - 🔵 `'{' yopilmagan (1 ta, qatorlar: [208])`
+> - 🔵 `Qator 276: ortiqcha ')' (juftisiz yopuvchi)`
+> - 🔵 `Qator 279: ortiqcha '}' (juftisiz yopuvchi)`
+> - 🔵 `Qator 279: ortiqcha ')' (juftisiz yopuvchi)`
+> - 🔵 `Qator 300: ortiqcha ')' (juftisiz yopuvchi)`
+> - 🔵 `Qator 301: ortiqcha '}' (juftisiz yopuvchi)`
+
+> **[[user-location-tab]]**
+> - 🔵 `'(' yopilmagan (1 ta, qatorlar: [96])`
+> - 🔵 `'{' yopilmagan (1 ta, qatorlar: [45])`
+
+> **[[user-songs-tab]]**
+> - 🔵 `'{' yopilmagan (1 ta, qatorlar: [38])`
+
+> **[[countries]]**
+> - 🔵 `'(' yopilmagan (8 ta, qatorlar: [269, 343, 345])`
+> - 🔵 `'{' yopilmagan (7 ta, qatorlar: [115, 331, 345])`
 
 > **[[genres]]**
 > - 🔵 `'{' yopilmagan (1 ta, qatorlar: [22])`
 
 > **[[login]]**
-> - 🔵 `'(' yopilmagan (1 ta, qatorlar: [70])`
-> - 🔵 `'{' yopilmagan (1 ta, qatorlar: [8])`
+> - 🔵 `'(' yopilmagan (1 ta, qatorlar: [74])`
+> - 🔵 `'{' yopilmagan (1 ta, qatorlar: [7])`
 
 > **[[notifications]]**
 > - 🔵 `'(' yopilmagan (1 ta, qatorlar: [156])`
 > - 🔵 `'{' yopilmagan (1 ta, qatorlar: [56])`
 
 > **[[pin-setup]]**
-> - 🔵 `'(' yopilmagan (2 ta, qatorlar: [51, 115])`
-> - 🔵 `'{' yopilmagan (2 ta, qatorlar: [15, 108])`
+> - 🔵 `'(' yopilmagan (2 ta, qatorlar: [89, 194])`
+> - 🔵 `'{' yopilmagan (2 ta, qatorlar: [16, 120])`
 
 > **[[subscriptions]]**
 > - 🔵 `Qator 317: ortiqcha '}' (juftisiz yopuvchi)`
@@ -266,8 +289,8 @@ health: "🔴 30 muammo"
 
 **[[plan-editor-modal]]**
 - 🟡 `export emptyPlan` → import topilmadi
-- 🟡 `export PlanEditorModal` → import topilmadi
 - 🟡 `export PlanFeature` → import topilmadi
+- 🟡 `export PlanEditorModal` → import topilmadi
 - 🟡 `export SubscriptionPlan` → import topilmadi
 
 **[[placeholder-page]]**
@@ -276,6 +299,12 @@ health: "🔴 30 muammo"
 **[[user-details-modal]]**
 - 🟡 `export UserDetailsModal` → import topilmadi
 - 🟡 `export AdminUserRow` → import topilmadi
+
+**[[user-location-tab]]**
+- 🟡 `export UserLocationTab` → import topilmadi
+
+**[[user-songs-tab]]**
+- 🟡 `export UserSongsTab` → import topilmadi
 
 **[[api]]**
 - 🟡 `export ApiError` → import topilmadi
@@ -300,4 +329,4 @@ python generate_topology.py D:\boshqa\papka
 
 ---
 
-*⚡ Avtomatik yaratildi: `generate_topology.py` | 2026-05-18 06:51:31*
+*⚡ Avtomatik yaratildi: `generate_topology.py` | 2026-05-23 13:23:25*

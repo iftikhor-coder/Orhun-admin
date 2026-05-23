@@ -17,7 +17,7 @@ import { scryptSync, randomBytes, timingSafeEqual } from 'node:crypto';
 import Store from 'electron-store';
 
 // === Konstantalar ===
-const PIN_LENGTH = 4;
+const PIN_LENGTH = 8;
 const MAX_ATTEMPTS = 5;
 const LOCK_DURATION_MS = 5 * 60 * 1000; // 5 daqiqa
 const SCRYPT_KEYLEN = 64;
@@ -98,8 +98,8 @@ export const secureStorage = {
    * Bu chaqirilgandan keyin setupCompleted = true bo'ladi.
    */
   setupPin(pin: string, email: string): { ok: boolean; error?: string } {
-    if (!/^\d{4}$/.test(pin)) {
-      return { ok: false, error: `PIN ${PIN_LENGTH} ta raqamdan iborat bo'lishi kerak` };
+    if (!/^[a-zA-Z0-9]{8}$/.test(pin)) {
+      return { ok: false, error: `PIN ${PIN_LENGTH} ta belgi (harf + raqam) bolishi kerak` };
     }
 
     try {
@@ -138,7 +138,7 @@ export const secureStorage = {
       };
     }
 
-    if (!/^\d{4}$/.test(pin)) {
+    if (!/^[a-zA-Z0-9]{8}$/.test(pin)) {
       return { ok: false, error: 'PIN noto\'g\'ri formatda' };
     }
 

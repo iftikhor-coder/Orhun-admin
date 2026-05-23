@@ -370,24 +370,30 @@ function LocationTab({ user }: { user: AdminUserRow }) {
     if (!user.last_ip) return;
     setGeoLoading(true);
     setGeoError('');
-    fetch(`https://ipapi.co/${user.last_ip}/json/`)
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.error) {
-          setGeoError(data.reason || 'IP topilmadi');
+    // main.ts IPC orqali (CSP cheklovisiz)
+    const geoFn = window.electronAPI?.getGeo;
+    if (typeof geoFn !== 'function') {
+      setGeoError('preload.ts yangilanmagan — npm run dev qayta ishlatib koʻring');
+      setGeoLoading(false);
+      return;
+    }
+    geoFn(user.last_ip)
+      .then((data: any) => {
+        if (!data) {
+          setGeoError('IP maʼlumoti olinmadi');
         } else {
           setGeoData({
-            city: data.city,
-            region: data.region,
-            country: data.country_name,
-            latitude: data.latitude,
+            city:      data.city,
+            region:    data.region,
+            country:   data.country_name,
+            latitude:  data.latitude,
             longitude: data.longitude,
-            org: data.org,
-            timezone: data.timezone,
+            org:       data.org,
+            timezone:  data.timezone,
           });
         }
       })
-      .catch((e) => setGeoError(e.message))
+      .catch((e: any) => setGeoError(e?.message ?? 'Xato'))
       .finally(() => setGeoLoading(false));
   }, [user.last_ip]);
 
@@ -461,19 +467,27 @@ function LocationTab({ user }: { user: AdminUserRow }) {
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
           />
-          {mapsLink && (
-            <a
-              href={mapsLink}
-              onClick={(e) => {
-                e.preventDefault();
-                window.electronAPI?.openExternal(mapsLink);
-              }}
-              className="flex items-center justify-center gap-2 border-t border-gold-900/30 bg-midnight-800/40 px-3 py-2 text-xs text-gold-300 hover:bg-midnight-700/40"
-            >
-              <ExternalLink className="h-3 w-3" />
-              Google Maps'da to'liq ko'rish
-            </a>
-          )}
+          <button
+            type="button"
+            onClick={() => {
+              if (geoData?.latitude && geoData?.longitude) {
+                window.electronAPI?.openMap?.(
+                  geoData.latitude,
+                  geoData.longitude,
+                  (geoData.city ?? '') + ', ' + (geoData.country ?? ''),
+                  user.last_ip ?? '',
+                  geoData.city ?? '',
+                  geoData.country ?? '',
+                  geoData.org ?? '',
+                  geoData.timezone ?? '',
+                );
+              }
+            }}
+            className="flex w-full items-center justify-center gap-2 border-t border-gold-900/30 bg-admin-500/10 px-3 py-2 text-xs font-semibold text-admin-300 hover:bg-admin-500/20 transition-colors"
+          >
+            <ExternalLink className="h-3 w-3" />
+            Katta xaritada ko'rish (alohida oyna)
+          </button>
         </div>
       )}
 
