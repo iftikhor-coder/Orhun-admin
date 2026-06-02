@@ -1,0 +1,650 @@
+Jami: 647 ta uzbekcha matn topildi
+============================================================
+
+App.tsx:5  →  import { AdminLayout } from '@/components/admin-layout';
+App.tsx:9  →  import { DashboardPage } from '@/routes/dashboard';
+App.tsx:23  →   * /login          — admin kirish sahifasi
+App.tsx:24  →   * /               — /dashboard ga redirect
+App.tsx:25  →   * /dashboard, /users, ... — ProtectedRoute orqali himoyalangan
+App.tsx:27  →   * Hamma protected sahifalar AdminLayout ichida (sidebar + content).
+App.tsx:47  →              <AdminLayout />
+App.tsx:51  →          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+App.tsx:52  →          <Route path="/dashboard" element={<DashboardPage />} />
+components\admin-layout.tsx:3  →  import { Sidebar } from './sidebar';
+components\admin-layout.tsx:6  →   * AdminLayout
+components\admin-layout.tsx:8  →   * Sidebar + asosiy content + tepada qizil "ADMIN ZONE" banner.
+components\admin-layout.tsx:9  →   * Hamma /admin/* sahifalar uchun wrapper sifatida ishlatiladi.
+components\admin-layout.tsx:11  →  export function AdminLayout() {
+components\admin-layout.tsx:14  →        <Sidebar />
+components\admin-layout.tsx:17  →          {/* === ADMIN ZONE BANNER — qizil chiziq yuqorida === */}
+components\admin-layout.tsx:18  →          <div className="flex items-center gap-2 border-b border-admin-700/40 bg-gradient-to-r from-admin-950/60 via-admin-900/40 to-admin-950/60 px-6 py-2">
+components\admin-layout.tsx:19  →            <ShieldAlert className="h-3.5 w-3.5 text-admin-400" />
+components\admin-layout.tsx:20  →            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-admin-300">
+components\admin-layout.tsx:21  →              Admin Zone — Sensitive Operations
+components\protected-route.tsx:9  →   * 2) User yoʻq yoki is_admin = false → /login ga redirect
+components\protected-route.tsx:21  →    console.log("[PR]", { initialized, user: !!user, isAdmin: profile?.is_admin });
+components\protected-route.tsx:34  →    if (!user || !profile?.is_admin) {
+components\sidebar.tsx:3  →    LayoutDashboard,
+components\sidebar.tsx:24  →    { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+components\sidebar.tsx:25  →    { to: '/users', label: 'Foydalanuvchilar', icon: Users },
+components\sidebar.tsx:28  →    { to: '/notifications', label: 'Bildirishnomalar', icon: Bell },
+components\sidebar.tsx:29  →    { to: '/subscriptions', label: 'Obunalar', icon: CreditCard },
+components\sidebar.tsx:30  →    { to: '/genres', label: 'Janrlar', icon: Tags },
+components\sidebar.tsx:34  →  export function Sidebar() {
+components\sidebar.tsx:38  →      <aside className="flex h-full w-64 flex-col border-r border-admin-900/30 bg-midnight-950">
+components\sidebar.tsx:39  →        {/* Brand + ADMIN badge */}
+components\sidebar.tsx:40  →        <div className="flex items-center gap-3 border-b border-admin-900/30 px-5 py-5">
+components\sidebar.tsx:41  →          <div className="grid h-10 w-10 place-items-center rounded-lg bg-gradient-admin shadow-lg shadow-admin-900/40">
+components\sidebar.tsx:48  →            <span className="mt-1 text-[10px] font-bold uppercase tracking-[0.25em] text-admin-400">
+components\sidebar.tsx:49  →              Admin Panel
+components\sidebar.tsx:65  →                        ? 'bg-admin-500/10 text-admin-300 ring-1 ring-admin-500/30'
+components\sidebar.tsx:79  →        <div className="border-t border-admin-900/30 p-3">
+components\sidebar.tsx:81  →            <div className="grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-full border border-admin-500/40 bg-admin-900/30">
+components\sidebar.tsx:89  →                <span className="text-sm font-bold text-admin-300">
+components\sidebar.tsx:96  →                {profile?.full_name || profile?.email || 'Admin'}
+components\sidebar.tsx:98  →              <div className="truncate text-[10px] text-admin-400">
+components\sidebar.tsx:99  →                ADMINISTRATOR
+components\sidebar.tsx:109  →            Chiqish
+components\analytics\feedback-tab.tsx:22  →    admin_response: string | null;
+components\analytics\feedback-tab.tsx:32  →    bug:       { icon: Bug,           label: 'Xatolik',        color: 'admin'   },
+components\analytics\feedback-tab.tsx:33  →    feature:   { icon: Sparkles,      label: 'Yangi imkoniyat',color: 'blue'    },
+components\analytics\feedback-tab.tsx:38  →    new:         { label: 'Yangi',         color: 'admin'   },
+components\analytics\feedback-tab.tsx:45  →    { key: 'all',         label: 'Hammasi'      },
+components\analytics\feedback-tab.tsx:46  →    { key: 'new',         label: 'Yangi'        },
+components\analytics\feedback-tab.tsx:97  →      setResponse(fb.admin_response ?? "");
+components\analytics\feedback-tab.tsx:106  →        const { error } = await supabase.rpc('admin_respond_feedback', {
+components\analytics\feedback-tab.tsx:112  →        setSuccess('✅ Javob yuborildi — foydalanuvchiga notification jonatildi');
+components\analytics\feedback-tab.tsx:116  →            ? { ...f, admin_response: response.trim(), responded_at: new Date().toISOString(), status: rStatus }
+components\analytics\feedback-tab.tsx:134  →              <div className="text-sm font-semibold text-blue-300">Foydalanuvchi xabarlari</div>
+components\analytics\feedback-tab.tsx:136  →                Yangi: <span className="font-bold text-admin-300">{counts.new}</span> ·
+components\analytics\feedback-tab.tsx:144  →            Yangilash
+components\analytics\feedback-tab.tsx:154  →          <div className="flex items-start gap-2 rounded-lg border border-admin-900/40 bg-admin-950/30 px-3 py-2 text-sm text-admin-300">
+components\analytics\feedback-tab.tsx:166  →                  ? 'bg-admin-500/10 text-admin-300 ring-1 ring-admin-500/30'
+components\analytics\feedback-tab.tsx:173  →                filter === f.key ? 'bg-admin-500/30 text-admin-100' : 'bg-white/5 text-gold-700',
+components\analytics\feedback-tab.tsx:201  →                      ? 'border-admin-500/40 bg-admin-950/10 hover:bg-admin-950/20'
+components\analytics\feedback-tab.tsx:207  →                      tm.color === 'admin'   && 'bg-admin-500/10 text-admin-300 ring-admin-500/30',
+components\analytics\feedback-tab.tsx:247  →                  Javob yuborish
+components\analytics\feedback-tab.tsx:252  →              {/* Foydalanuvchi xabari */}
+components\analytics\feedback-tab.tsx:266  →              {selected.admin_response && (
+components\analytics\feedback-tab.tsx:273  →                  <p className="whitespace-pre-wrap text-sm text-gold-200">{selected.admin_response}</p>
+components\analytics\feedback-tab.tsx:277  →              {/* Yangi javob */}
+components\analytics\feedback-tab.tsx:281  →                  placeholder="Foydalanuvchi notification orqali bu javobni oladi..."
+components\analytics\feedback-tab.tsx:285  →              {/* Holat tanlash */}
+components\analytics\feedback-tab.tsx:287  →                <label className="mb-2 block text-xs font-semibold text-gold-200">Yangi holat</label>
+components\analytics\feedback-tab.tsx:294  →                          ? 'bg-admin-500/10 text-admin-300 ring-1 ring-admin-500/30'
+components\analytics\feedback-tab.tsx:304  →                <div className="rounded-lg border border-admin-900/40 bg-admin-950/30 px-3 py-2 text-sm text-admin-300">
+components\analytics\multi-account-tab.tsx:37  →    is_admin: boolean;
+components\analytics\multi-account-tab.tsx:72  →        const { data, error } = await supabase.rpc('admin_detect_multi_accounts');
+components\analytics\multi-account-tab.tsx:109  →        const { error } = await supabase.rpc('admin_toggle_ban', {
+components\analytics\multi-account-tab.tsx:128  →        const { error } = await supabase.rpc('admin_ban_device', {
+components\analytics\multi-account-tab.tsx:145  →        <div className="flex items-center justify-between gap-3 rounded-xl border border-admin-900/40 bg-admin-950/20 px-4 py-3">
+components\analytics\multi-account-tab.tsx:147  →            <AlertTriangle className="h-5 w-5 text-admin-400" />
+components\analytics\multi-account-tab.tsx:149  →              <div className="text-sm font-semibold text-admin-300">Multi-account detektor</div>
+components\analytics\multi-account-tab.tsx:158  →            Yangilash
+components\analytics\multi-account-tab.tsx:168  →          <div className="flex items-start gap-2 rounded-lg border border-admin-900/40 bg-admin-950/30 px-3 py-2 text-sm text-admin-300">
+components\analytics\multi-account-tab.tsx:174  →          <div className="rounded-xl border border-admin-900/40 bg-admin-950/10 p-3">
+components\analytics\multi-account-tab.tsx:175  →            <div className="text-[10px] uppercase tracking-wider text-admin-300">🚨 Yuqori risk</div>
+components\analytics\multi-account-tab.tsx:176  →            <div className="mt-1 font-display text-2xl font-bold text-admin-100">
+components\analytics\multi-account-tab.tsx:203  →            ✅ Shubhali holatlar topilmadi
+components\analytics\multi-account-tab.tsx:216  →                  r === 'high'   ? 'border-admin-500/40 bg-admin-950/20'  :
+components\analytics\multi-account-tab.tsx:235  →                        {r === 'high'   && <Badge variant="admin">🚨 YUQORI RISK</Badge>}
+components\analytics\multi-account-tab.tsx:260  →                        <div className="border-b border-gold-900/30 bg-admin-950/10 px-4 py-2 flex items-center justify-between gap-3">
+components\analytics\multi-account-tab.tsx:264  →                              className="flex items-center gap-2 rounded-md bg-gradient-admin px-3 py-1.5 text-xs font-semibold text-white shadow-lg hover:scale-[1.02]">
+components\analytics\multi-account-tab.tsx:269  →                              VPN, yangi Gmail — Oracle server bloklaydi
+components\analytics\multi-account-tab.tsx:299  →                                {acc.is_admin  && <Shield className="h-3 w-3 text-admin-400" />}
+components\analytics\multi-account-tab.tsx:300  →                                {acc.is_banned && <Badge variant="admin">Banned</Badge>}
+components\analytics\multi-account-tab.tsx:314  →                                <ExternalLink className="inline h-3 w-3 mr-1" />Ko'rish
+components\analytics\multi-account-tab.tsx:316  →                              {!acc.is_banned && !acc.is_admin && (
+components\analytics\multi-account-tab.tsx:319  →                                  className="rounded-md bg-admin-500/15 px-2 py-1 text-[10px] font-semibold text-admin-300 hover:bg-admin-500/25">
+components\analytics\multi-account-tab.tsx:337  →            width="sm" title="Foydalanuvchini ban qilish"
+components\analytics\multi-account-tab.tsx:343  →                  Bekor
+components\analytics\multi-account-tab.tsx:347  →                  className="flex items-center gap-2 rounded-lg bg-gradient-admin px-4 py-2 text-sm font-semibold text-white shadow-lg hover:scale-[1.02] disabled:opacity-50">
+components\analytics\multi-account-tab.tsx:355  →                placeholder="Ban sababi (majburiy)..."
+components\analytics\multi-account-tab.tsx:356  →                className="w-full rounded-md border border-gold-900/40 bg-midnight-900/60 px-3 py-2 text-sm text-gold-100 placeholder:text-gold-700/40 focus:border-admin-500/60 focus:outline-none" />
+components\analytics\multi-account-tab.tsx:369  →                  Bekor
+components\analytics\multi-account-tab.tsx:373  →                  className="flex items-center gap-2 rounded-lg bg-gradient-admin px-4 py-2 text-sm font-semibold text-white shadow-lg hover:scale-[1.02] disabled:opacity-50">
+components\analytics\multi-account-tab.tsx:380  →              <div className="rounded-lg border border-admin-900/40 bg-admin-950/20 p-3 text-sm text-admin-200">
+components\analytics\multi-account-tab.tsx:382  →                VPN ishlatsa ham, yangi Gmail ochsa ham — Oracle server bloklaydi.
+components\analytics\multi-account-tab.tsx:385  →                placeholder="Ban sababi (majburiy)..."
+components\analytics\multi-account-tab.tsx:386  →                className="w-full rounded-md border border-gold-900/40 bg-midnight-900/60 px-3 py-2 text-sm text-gold-100 placeholder:text-gold-700/40 focus:border-admin-500/60 focus:outline-none" />
+components\analytics\overview-charts.tsx:19  →    admins: number;
+components\analytics\overview-charts.tsx:28  →    total_credits_used: number;
+components\analytics\overview-charts.tsx:82  →          supabase.rpc('admin_analytics_overview'),
+components\analytics\overview-charts.tsx:83  →          supabase.rpc('admin_users_growth', { p_days: 30 }),
+components\analytics\overview-charts.tsx:84  →          supabase.rpc('admin_songs_daily',  { p_days: 30 }),
+components\analytics\overview-charts.tsx:85  →          supabase.rpc('admin_genre_distribution'),
+components\analytics\overview-charts.tsx:86  →          supabase.rpc('admin_country_distribution'),
+components\analytics\overview-charts.tsx:109  →    // CSV eksport — foydalanuvchilar
+components\analytics\overview-charts.tsx:115  →          .select('id,email,username,full_name,is_admin,is_banned,credits_remaining,last_country,last_ip,created_at')
+components\analytics\overview-charts.tsx:118  →        const headers = ['id','email','username','full_name','is_admin','is_banned','credits_remaining','last_country','last_ip','created_at'];
+components\analytics\overview-charts.tsx:125  →        setExportMsg(`✅ ${data.length} ta foydalanuvchi eksport qilindi`);
+components\analytics\overview-charts.tsx:134  →    // CSV eksport — qo'shiqlar
+components\analytics\overview-charts.tsx:163  →        const { data } = await supabase.rpc('admin_analytics_overview');
+components\analytics\overview-charts.tsx:177  →  <div class="card"><div class="label">Jami foydalanuvchilar</div><div class="val">${s.total_users||0}</div></div>
+components\analytics\overview-charts.tsx:178  →  <div class="card"><div class="label">Jami qo'shiqlar</div><div class="val">${s.total_songs||0}</div></div>
+components\analytics\overview-charts.tsx:179  →  <div class="card"><div class="label">Bugungi yangilar</div><div class="val">+${s.new_users_today||0}</div></div>
+components\analytics\overview-charts.tsx:180  →  <div class="card"><div class="label">Bugungi qo'shiqlar</div><div class="val">+${s.songs_today||0}</div></div>
+components\analytics\overview-charts.tsx:182  →  <div class="card"><div class="label">Flagged qo'shiqlar</div><div class="val">${s.songs_flagged||0}</div></div>
+components\analytics\overview-charts.tsx:183  →  <div class="card"><div class="label">Credit ishlatilgan</div><div class="val">${s.total_credits_used||0}</div></div>
+components\analytics\overview-charts.tsx:184  →  <div class="card"><div class="label">Yangi feedback</div><div class="val">${s.feedback_new||0}</div></div>
+components\analytics\overview-charts.tsx:186  →  <footer>Orhun AI Admin Panel · ${new Date().getFullYear()}</footer>
+components\analytics\overview-charts.tsx:216  →            : 'border-admin-900/40 bg-admin-950/20',
+components\analytics\overview-charts.tsx:221  →              online ? 'bg-emerald-400 animate-pulse' : 'bg-admin-400',
+components\analytics\overview-charts.tsx:233  →              : <WifiOff className="h-4 w-4 text-admin-400" />}
+components\analytics\overview-charts.tsx:242  →            Yangilash
+components\analytics\overview-charts.tsx:246  →        {/* Eksport paneli */}
+components\analytics\overview-charts.tsx:270  →            <StatCard icon={Users}        label="Jami foydalanuvchilar" value={stats.total_users}        sub={`+${stats.new_users_today} bugun`} color="gold" />
+components\analytics\overview-charts.tsx:272  →            <StatCard icon={Sparkles}     label="Credit ishlatilgan"    value={stats.total_credits_used} sub="API xarajati"                     color="blue" />
+components\analytics\overview-charts.tsx:273  →            <StatCard icon={AlertTriangle} label="Banlangan / Flagged"  value={stats.banned_users}       sub={`${stats.songs_flagged} flagged`} color="admin" />
+components\analytics\overview-charts.tsx:277  →        {/* Foydalanuvchilar o'sishi */}
+components\analytics\overview-charts.tsx:278  →        <ChartCard title="Foydalanuvchilar o'sishi (30 kun)" icon={TrendingUp}>
+components\analytics\overview-charts.tsx:292  →              <Area type="monotone" dataKey="new_users"   stroke="#ec4899" fill="none"          name="Yangi" />
+components\analytics\overview-charts.tsx:297  →        {/* Kunlik qo'shiqlar */}
+components\analytics\overview-charts.tsx:311  →          {/* Janr pie chart */}
+components\analytics\overview-charts.tsx:312  →          <ChartCard title="Janr distributsiyasi" icon={Music}>
+components\analytics\overview-charts.tsx:345  →    color: 'gold' | 'emerald' | 'admin' | 'blue';
+components\analytics\overview-charts.tsx:350  →      admin:   'bg-admin-500/10 text-admin-300 ring-admin-500/30',
+components\analytics\overview-charts.tsx:398  →      <ChartCard title="Davlatlar — foydalanuvchilar" icon={Globe}>
+components\analytics\overview-charts.tsx:401  →            IP ma'lumoti yo'q
+components\analytics\overview-charts.tsx:427  →                      <div className="px-4 py-2 text-xs text-gold-700">Foydalanuvchi topilmadi</div>
+components\analytics\overview-charts.tsx:449  →                          <span className="text-[10px] text-gold-700">Ko'rish →</span>
+components\analytics\overview-charts.tsx:470  →          <Icon className="h-3.5 w-3.5 text-admin-300" />
+components\genres\genre-editor-modal.tsx:19  →    slug: string;
+components\genres\genre-editor-modal.tsx:35  →      slug: '',
+components\genres\genre-editor-modal.tsx:78  →      if (!draft.slug.trim()) return setError('Slug majburiy');
+components\genres\genre-editor-modal.tsx:79  →      if (!/^[a-z0-9_-]+$/.test(draft.slug)) return setError('Slug faqat a-z, 0-9, _, - belgilaridan');
+components\genres\genre-editor-modal.tsx:81  →        return setError('Hamma 4 tilda (UZ/EN/TR/AZ) nom majburiy');
+components\genres\genre-editor-modal.tsx:83  →        return setError('Hybrid janr uchun hybrid prompt majburiy');
+components\genres\genre-editor-modal.tsx:87  →        slug: draft.slug.trim(),
+components\genres\genre-editor-modal.tsx:112  →        title={isNew ? 'Yangi janr yaratish' : `Tahrirlash: ${genre?.name_uz}`}
+components\genres\genre-editor-modal.tsx:113  →        subtitle={isNew ? 'UZ/EN/TR/AZ toʻldiring' : genre?.slug}
+components\genres\genre-editor-modal.tsx:118  →              Bekor
+components\genres\genre-editor-modal.tsx:123  →              {isNew ? 'Yaratish' : 'Saqlash'}
+components\genres\genre-editor-modal.tsx:130  →            <div className="flex items-start gap-2 rounded-lg border border-admin-900/40 bg-admin-950/30 px-3 py-2 text-sm text-admin-300">
+components\genres\genre-editor-modal.tsx:145  →                  {draft[`name_${activeLang}`] || <span className="italic text-gold-700/50">Nom...</span>}
+components\genres\genre-editor-modal.tsx:159  →                <label className="mb-1 block text-[10px] uppercase tracking-wider text-gold-700">Slug *</label>
+components\genres\genre-editor-modal.tsx:160  →                <input type="text" value={draft.slug}
+components\genres\genre-editor-modal.tsx:161  →                  onChange={(e) => update('slug', e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, ''))}
+components\genres\genre-editor-modal.tsx:174  →              <span className="text-sm text-gold-100">Faol</span>
+components\genres\genre-editor-modal.tsx:216  →          {/* 4 til nom */}
+components\genres\genre-editor-modal.tsx:217  →          <Section title="Nom va tavsif (UZ/EN/TR/AZ)" icon={Globe} required>
+components\genres\genre-editor-modal.tsx:225  →                        ? 'bg-admin-500/10 text-admin-300 ring-1 ring-admin-500/30'
+components\genres\genre-editor-modal.tsx:238  →                placeholder={`Nom (${activeLang.toUpperCase()}) — majburiy`} maxLength={50} className="input" />
+components\genres\genre-editor-modal.tsx:254  →                <div className="text-sm font-medium text-gold-100">Hybrid janr</div>
+components\genres\genre-editor-modal.tsx:292  →          <Icon className="h-3.5 w-3.5 text-admin-300" />
+components\genres\genre-editor-modal.tsx:293  →          {title}{required && <span className="text-admin-400">*</span>}
+components\notifications\preview-card.tsx:6  →  type BroadcastType = 'admin_announcement' | 'update' | 'warning' | 'credits_refreshed';
+components\notifications\preview-card.tsx:25  →    admin_announcement: {
+components\notifications\preview-card.tsx:29  →      labelByLang: { uz: 'Eʼlon', en: 'Announcement', az: 'Elan', tr: 'Duyuru' },
+components\notifications\preview-card.tsx:35  →      labelByLang: { uz: 'Yangilanish', en: 'Update', az: 'Yeniləmə', tr: 'Güncelleme' },
+components\notifications\preview-card.tsx:39  →      colorRing: 'ring-admin-500/30 bg-admin-500/10',
+components\notifications\preview-card.tsx:40  →      colorIcon: 'text-admin-400',
+components\notifications\preview-card.tsx:41  →      labelByLang: { uz: 'Ogohlantirish', en: 'Warning', az: 'Xəbərdarlıq', tr: 'Uyarı' },
+components\notifications\preview-card.tsx:43  →    credits_refreshed: {
+components\notifications\preview-card.tsx:47  →      labelByLang: { uz: 'Credits', en: 'Credits', az: 'Kreditlər', tr: 'Krediler' },
+components\notifications\preview-card.tsx:63  →   * PreviewCard — foydalanuvchi qanday ko'rishini ko'rsatadi
+components\songs\song-details-modal.tsx:12  →  export interface AdminSongRow {
+components\songs\song-details-modal.tsx:34  →    song: AdminSongRow;
+components\songs\song-details-modal.tsx:37  →    onUpdated: (patch: Partial<AdminSongRow>) => void;
+components\songs\song-details-modal.tsx:47  →    { id: 'actions',  label: 'Amallar',   icon: Settings },
+components\songs\song-details-modal.tsx:75  →                  ? 'bg-admin-500/10 text-admin-300 ring-1 ring-admin-500/30'
+components\songs\song-details-modal.tsx:101  →  function InfoTab({ song }: { song: AdminSongRow }) {
+components\songs\song-details-modal.tsx:146  →            <Badge variant="admin" icon={<Flag className="h-3 w-3" />}>
+components\songs\song-details-modal.tsx:172  →          <div className="rounded-lg border border-admin-900/40 bg-admin-950/30 p-3">
+components\songs\song-details-modal.tsx:173  →            <div className="flex items-center gap-2 text-xs font-semibold text-admin-300">
+components\songs\song-details-modal.tsx:242  →        case 'failed':     return 'admin';
+components\songs\song-details-modal.tsx:278  →        // Likes jadval nomi: 'likes' yoki 'song_likes' deb taxmin
+components\songs\song-details-modal.tsx:408  →          Hali komment yo'q
+components\songs\song-details-modal.tsx:454  →   *  Tab 4: Amallar (unpublish, delete, flag)
+components\songs\song-details-modal.tsx:463  →    song: AdminSongRow;
+components\songs\song-details-modal.tsx:464  →    onUpdated: (patch: Partial<AdminSongRow>) => void;
+components\songs\song-details-modal.tsx:494  →      const { data, error } = await supabase.rpc('admin_unpublish_song', {
+components\songs\song-details-modal.tsx:520  →      const { data, error } = await supabase.rpc('admin_flag_song', {
+components\songs\song-details-modal.tsx:542  →        setError("O'chirish sababini kiriting (foydalanuvchiga yuboriladi)");
+components\songs\song-details-modal.tsx:550  →      const { error } = await supabase.rpc('admin_force_delete_song', {
+components\songs\song-details-modal.tsx:567  →          <div className="rounded-lg border border-admin-900/40 bg-admin-950/30 px-3 py-2 text-sm text-admin-300">
+components\songs\song-details-modal.tsx:596  →              placeholder="Sabab (foydalanuvchiga yuboriladi)..."
+components\songs\song-details-modal.tsx:609  →              : "Yashirin marker — faqat adminlar ko'radi, foydalanuvchiga xabar yo'q"
+components\songs\song-details-modal.tsx:611  →          variant="admin"
+components\songs\song-details-modal.tsx:621  →              placeholder="Yashirin sabab (faqat adminlar ko'radi)..."
+components\songs\song-details-modal.tsx:622  →              className="mt-2 w-full rounded-md border border-gold-900/40 bg-midnight-900/60 px-3 py-2 text-sm text-gold-100 placeholder:text-gold-700/40 focus:border-admin-500/60 focus:outline-none"
+components\songs\song-details-modal.tsx:632  →          variant="admin"
+components\songs\song-details-modal.tsx:642  →            placeholder="Sabab (majburiy, foydalanuvchiga yuboriladi)..."
+components\songs\song-details-modal.tsx:643  →            className="mt-2 w-full rounded-md border border-gold-900/40 bg-midnight-900/60 px-3 py-2 text-sm text-gold-100 placeholder:text-gold-700/40 focus:border-admin-500/60 focus:outline-none"
+components\songs\song-details-modal.tsx:654  →    variant: 'gold' | 'admin' | 'amber';
+components\songs\song-details-modal.tsx:675  →      admin: 'bg-gradient-admin text-white hover:scale-[1.02]',
+components\songs\song-details-modal.tsx:683  →          ? 'border-admin-900/40 bg-admin-950/10'
+components\songs\song-details-modal.tsx:691  →              variant === 'admin' && 'bg-admin-500/10 text-admin-300 ring-admin-500/30',
+components\subscriptions\plan-editor-modal.tsx:34  →    slug: string;
+components\subscriptions\plan-editor-modal.tsx:45  →    credits_per_period: number;
+components\subscriptions\plan-editor-modal.tsx:52  →      slug: '', duration_months: 1,
+components\subscriptions\plan-editor-modal.tsx:59  →      features: [], credits_per_period: 100,
+components\subscriptions\plan-editor-modal.tsx:107  →      if (!draft.slug.trim()) return setError('Slug majburiy');
+components\subscriptions\plan-editor-modal.tsx:108  →      if (!/^[a-z0-9_-]+$/.test(draft.slug)) return setError("Slug faqat a-z, 0-9, _, - bo'lsin");
+components\subscriptions\plan-editor-modal.tsx:110  →        return setError('Hamma 4 tilda nom to\'ldirilishi kerak');
+components\subscriptions\plan-editor-modal.tsx:115  →        slug: draft.slug.trim(), duration_months: draft.duration_months,
+components\subscriptions\plan-editor-modal.tsx:128  →        credits_per_period: draft.credits_per_period,
+components\subscriptions\plan-editor-modal.tsx:147  →        title={isNew ? 'Yangi tarif yaratish' : `Tahrirlash: ${plan?.name_uz}`}
+components\subscriptions\plan-editor-modal.tsx:148  →        subtitle={isNew ? 'Hamma maydonlarni to\'ldiring' : plan?.slug}
+components\subscriptions\plan-editor-modal.tsx:153  →              Bekor qilish
+components\subscriptions\plan-editor-modal.tsx:158  →              {isNew ? 'Yaratish' : 'Saqlash'}
+components\subscriptions\plan-editor-modal.tsx:168  →              <div className="flex items-start gap-2 rounded-lg border border-admin-900/40 bg-admin-950/30 px-3 py-2 text-sm text-admin-300">
+components\subscriptions\plan-editor-modal.tsx:176  →                <Field label="Slug" required>
+components\subscriptions\plan-editor-modal.tsx:177  →                  <input type="text" value={draft.slug}
+components\subscriptions\plan-editor-modal.tsx:178  →                    onChange={(e) => update('slug', e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, ''))}
+components\subscriptions\plan-editor-modal.tsx:186  →                <Field label="Credits / davr" required>
+components\subscriptions\plan-editor-modal.tsx:187  →                  <input type="number" min={0} value={draft.credits_per_period}
+components\subscriptions\plan-editor-modal.tsx:188  →                    onChange={(e) => update('credits_per_period', parseInt(e.target.value) || 0)}
+components\subscriptions\plan-editor-modal.tsx:203  →                  <span style={{ fontSize: '13px', color: '#fff0d4' }}>Faol</span>
+components\subscriptions\plan-editor-modal.tsx:217  →            {/* 4 til nom */}
+components\subscriptions\plan-editor-modal.tsx:218  →            <Section title="Nom (4 til: UZ/EN/TR/AZ)" icon={Globe} required>
+components\subscriptions\plan-editor-modal.tsx:224  →                  placeholder={`Nom (${activeLang.toUpperCase()}) — majburiy`}
+components\subscriptions\plan-editor-modal.tsx:309  →                  Feature qo'shish
+components\ui\badge.tsx:4  →    | 'gold' | 'admin' | 'emerald' | 'amber' | 'blue' | 'neutral';
+components\ui\badge.tsx:15  →    admin:   'bg-admin-500/15 text-admin-300 ring-admin-500/30',
+components\ui\badge.tsx:23  →   * Badge — rangli yorliq (admin, banlangan, faol va h.k.)
+components\ui\page-header.tsx:11  →   * PageHeader — har bir admin sahifasining yuqori qismi.
+components\ui\page-header.tsx:18  →          <div className="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-admin-500/10 ring-1 ring-admin-500/30">
+components\ui\page-header.tsx:19  →            <Icon className="h-5 w-5 text-admin-300" />
+components\ui\placeholder-page.tsx:14  →   * Faza nomi va kelajakda qoʻshiladigan funksiyalar roʻyxatini koʻrsatadi.
+components\ui\stat-card.tsx:4  →  type AccentColor = 'gold' | 'admin' | 'emerald' | 'amber' | 'blue';
+components\ui\stat-card.tsx:24  →    admin: {
+components\ui\stat-card.tsx:25  →      icon: 'text-admin-300',
+components\ui\stat-card.tsx:26  →      bg: 'bg-admin-500/10',
+components\ui\stat-card.tsx:27  →      ring: 'ring-admin-500/20',
+components\ui\stat-card.tsx:77  →                  deltaNegative && 'text-admin-400',
+components\users\user-details-modal.tsx:13  →  export interface AdminUserRow {
+components\users\user-details-modal.tsx:20  →    is_admin: boolean;
+components\users\user-details-modal.tsx:24  →    credits_remaining: number | null;
+components\users\user-details-modal.tsx:25  →    credits_reset_at: string | null;
+components\users\user-details-modal.tsx:36  →    user: AdminUserRow;
+components\users\user-details-modal.tsx:39  →    onUpdated: (patch: Partial<AdminUserRow>) => void;
+components\users\user-details-modal.tsx:46  →    { id: 'songs',    label: "Qo'shiqlar", icon: Music },
+components\users\user-details-modal.tsx:48  →    { id: 'actions',  label: 'Amallar',    icon: Settings },
+components\users\user-details-modal.tsx:63  →        title={user.full_name || user.username || user.email || 'Foydalanuvchi'}
+components\users\user-details-modal.tsx:76  →                  ? 'bg-admin-500/10 text-admin-300 ring-1 ring-admin-500/30'
+components\users\user-details-modal.tsx:102  →  function InfoTab({ user }: { user: AdminUserRow }) {
+components\users\user-details-modal.tsx:130  →              {user.is_admin && (
+components\users\user-details-modal.tsx:131  →                <Badge variant="admin" icon={<Shield className="h-3 w-3" />}>
+components\users\user-details-modal.tsx:132  →                  Administrator
+components\users\user-details-modal.tsx:136  →                <Badge variant="admin" icon={<Ban className="h-3 w-3" />}>
+components\users\user-details-modal.tsx:140  →              {status === 'active' && !user.is_admin && (
+components\users\user-details-modal.tsx:141  →                <Badge variant="emerald">Faol</Badge>
+components\users\user-details-modal.tsx:152  →          <InfoRow icon={Sparkles} label="Credit qoldig'i" value={String(user.credits_remaining ?? 0)} />
+components\users\user-details-modal.tsx:154  →          <InfoRow icon={Clock} label="Oxirgi kirish" value={user.last_sign_in_at ? timeAgo(user.last_sign_in_at) : '—'} />
+components\users\user-details-modal.tsx:159  →          <div className="rounded-lg border border-admin-900/40 bg-admin-950/30 p-3">
+components\users\user-details-modal.tsx:160  →            <div className="flex items-center gap-2 text-xs font-semibold text-admin-300">
+components\users\user-details-modal.tsx:264  →          Foydalanuvchi hali biron qo'shiq yaratmagan
+components\users\user-details-modal.tsx:287  →                    ? 'bg-admin-500 text-white'
+components\users\user-details-modal.tsx:356  →  function LocationTab({ user }: { user: AdminUserRow }) {
+components\users\user-details-modal.tsx:376  →        setGeoError('preload.ts yangilanmagan — npm run dev qayta ishlatib koʻring');
+components\users\user-details-modal.tsx:456  →          <div className="rounded-lg border border-admin-900/40 bg-admin-950/30 px-3 py-2 text-sm text-admin-300">
+components\users\user-details-modal.tsx:486  →              className="flex w-full items-center justify-center gap-2 border-t border-gold-900/30 bg-admin-500/10 px-3 py-2 text-xs font-semibold text-admin-300 hover:bg-admin-500/20 transition-colors"
+components\users\user-details-modal.tsx:489  →              Katta xaritada ko'rish (alohida oyna)
+components\users\user-details-modal.tsx:509  →   *  Tab 4: Amallar (admin toggle, ban, credit, xabar)
+components\users\user-details-modal.tsx:517  →    user: AdminUserRow;
+components\users\user-details-modal.tsx:518  →    onUpdated: (patch: Partial<AdminUserRow>) => void;
+components\users\user-details-modal.tsx:521  →    const { profile: currentAdmin } = useAuth();
+components\users\user-details-modal.tsx:522  →    const isSelf = currentAdmin?.id === user.id;
+components\users\user-details-modal.tsx:535  →    // Xabar yuborish
+components\users\user-details-modal.tsx:547  →    const handleToggleAdmin = async () => {
+components\users\user-details-modal.tsx:550  →        setError("O'zingizning admin huquqingizni olib tashlolmaysiz");
+components\users\user-details-modal.tsx:553  →      if (!confirm(user.is_admin ? "Admin huquqini olib tashlash?" : "Admin huquqi berish?")) return;
+components\users\user-details-modal.tsx:555  →      setBusy('admin');
+components\users\user-details-modal.tsx:556  →      const { data, error } = await supabase.rpc('admin_toggle_admin_role', {
+components\users\user-details-modal.tsx:563  →        onUpdated({ is_admin: data });
+components\users\user-details-modal.tsx:564  →        setSuccess(data ? '✅ Admin huquqi berildi' : '✅ Admin huquqi olib tashlandi');
+components\users\user-details-modal.tsx:578  →      if (!confirm(user.is_banned ? "Ban'ni olib tashlash?" : "Foydalanuvchini ban qilish?")) return;
+components\users\user-details-modal.tsx:581  →      const { data, error } = await supabase.rpc('admin_toggle_ban', {
+components\users\user-details-modal.tsx:595  →        setSuccess(data ? '✅ Foydalanuvchi banlandi' : '✅ Ban olib tashlandi');
+components\users\user-details-modal.tsx:599  →    const handleGrantCredits = async () => {
+components\users\user-details-modal.tsx:605  →      setBusy('credits');
+components\users\user-details-modal.tsx:606  →      const { data, error } = await supabase.rpc('admin_grant_credits', {
+components\users\user-details-modal.tsx:615  →        onUpdated({ credits_remaining: data });
+components\users\user-details-modal.tsx:617  →        setSuccess(`✅ ${creditAmount > 0 ? '+' : ''}${creditAmount} credit. Yangi qoldiq: ${data}`);
+components\users\user-details-modal.tsx:624  →        setError("Kamida UZ sarlavha va matn kerak");
+components\users\user-details-modal.tsx:628  →      const { error } = await supabase.rpc('admin_send_user_notification', {
+components\users\user-details-modal.tsx:638  →        p_type: 'admin_announcement',
+components\users\user-details-modal.tsx:649  →        setSuccess('✅ Xabar yuborildi');
+components\users\user-details-modal.tsx:657  →          <div className="rounded-lg border border-admin-900/40 bg-admin-950/30 px-3 py-2 text-sm text-admin-300">
+components\users\user-details-modal.tsx:667  →        {/* Admin toggle */}
+components\users\user-details-modal.tsx:670  →          title={user.is_admin ? "Admin huquqini olib tashlash" : "Admin qilish"}
+components\users\user-details-modal.tsx:672  →            user.is_admin
+components\users\user-details-modal.tsx:673  →              ? "Bu foydalanuvchi admin panelga kira olmaydi"
+components\users\user-details-modal.tsx:674  →              : "Bu foydalanuvchi admin panelga kira oladi"
+components\users\user-details-modal.tsx:676  →          variant={user.is_admin ? 'admin' : 'gold'}
+components\users\user-details-modal.tsx:678  →          loading={busy === 'admin'}
+components\users\user-details-modal.tsx:679  →          buttonLabel={user.is_admin ? "Admin'ni olib tashlash" : "Admin qilish"}
+components\users\user-details-modal.tsx:680  →          onAction={handleToggleAdmin}
+components\users\user-details-modal.tsx:689  →              ? "Foydalanuvchi yana saytdan foydalana oladi"
+components\users\user-details-modal.tsx:690  →              : "Foydalanuvchi saytdan foydalanolmaydi"
+components\users\user-details-modal.tsx:692  →          variant="admin"
+components\users\user-details-modal.tsx:703  →              placeholder="Ban sababi (majburiy)..."
+components\users\user-details-modal.tsx:704  →              className="mt-2 w-full rounded-md border border-gold-900/40 bg-midnight-900/60 px-3 py-2 text-sm text-gold-100 placeholder:text-gold-700/40 focus:border-admin-500/60 focus:outline-none"
+components\users\user-details-modal.tsx:713  →          description={`Hozirgi qoldiq: ${user.credits_remaining ?? 0} credit`}
+components\users\user-details-modal.tsx:715  →          loading={busy === 'credits'}
+components\users\user-details-modal.tsx:717  →          onAction={handleGrantCredits}
+components\users\user-details-modal.tsx:736  →            Manfiy son ham mumkin (credit olib tashlash). Foydalanuvchiga avtomatik notification yuboriladi.
+components\users\user-details-modal.tsx:743  →          title="Maxsus xabar yuborish"
+components\users\user-details-modal.tsx:744  →          description="Foydalanuvchiga 4 tilda notification (UZ majburiy)"
+components\users\user-details-modal.tsx:747  →          buttonLabel="Xabar yuborish"
+components\users\user-details-modal.tsx:755  →              placeholder="Sarlavha (UZ) — majburiy"
+components\users\user-details-modal.tsx:768  →              placeholder="Matn (UZ) — majburiy"
+components\users\user-details-modal.tsx:789  →    variant: 'gold' | 'admin' | 'blue';
+components\users\user-details-modal.tsx:810  →      admin: 'bg-gradient-admin text-white hover:scale-[1.02]',
+components\users\user-details-modal.tsx:821  →              variant === 'admin' && 'bg-admin-500/10 text-admin-300 ring-admin-500/30',
+components\users\user-location-tab.tsx:147  →                  <MapPin className="h-3.5 w-3.5 text-admin-300" />
+components\users\user-location-tab.tsx:156  →                          ? 'bg-admin-500/20 text-admin-300'
+components\users\user-location-tab.tsx:164  →                    className="ml-1 flex items-center gap-1 rounded bg-admin-500/15 px-2 py-0.5 text-[10px] font-semibold text-admin-300 hover:bg-admin-500/25 transition-colors">
+components\users\user-location-tab.tsx:185  →            <Smartphone className="h-3.5 w-3.5 text-admin-300" />
+components\users\user-location-tab.tsx:199  →            <div className="text-center text-sm text-gold-700">Qurilma ma'lumoti yo'q</div>
+components\users\user-songs-tab.tsx:27  →    failed:     'admin',
+components\users\user-songs-tab.tsx:80  →      // Xuddi shu qo'shiq — pauza
+components\users\user-songs-tab.tsx:87  →      // Boshqa qo'shiq o'ynayotgan bo'lsa to'xtatamiz
+components\users\user-songs-tab.tsx:124  →        <div className="flex items-center gap-2 rounded-lg border border-admin-900/40 bg-admin-950/20 px-3 py-3 text-sm text-admin-300">
+components\users\user-songs-tab.tsx:134  →          Foydalanuvchi hali biron qo'shiq yaratmagan
+components\users\user-songs-tab.tsx:142  →          Jami: <span className="font-semibold text-gold-300">{songs.length}</span> ta qo'shiq
+components\users\user-songs-tab.tsx:192  →                    <span className="rounded bg-admin-500/20 px-1 py-0.5 text-[9px] font-bold uppercase text-admin-300">
+lib\api.ts:8  →   *   - POST /api/notify/email     → email yuborish (Gmail)
+lib\auth.ts:4  →   * - Hozirgi user va admin profile state'ini saqlaydi
+lib\auth.ts:5  →   * - is_admin tekshiruvi (profiles jadvalidan)
+lib\auth.ts:6  →   * - DPAPI orqali session'ni saqlash/qayta tiklash
+lib\auth.ts:10  →   *   - Profile faqat signIn() va restoreFromSecureStorage()'da yangilanadi
+lib\auth.ts:18  →  export interface AdminProfile {
+lib\auth.ts:23  →    is_admin: boolean;
+lib\auth.ts:29  →    profile: AdminProfile | null;
+lib\auth.ts:77  →          // ProtectedRoute o'zi profile'ni tekshirib, kerak bo'lsa olib oladi.
+lib\auth.ts:94  →          // Token yangilandi — secure storage'da ham yangilash
+lib\auth.ts:120  →        if (!get().profile?.is_admin) {
+lib\auth.ts:145  →          set({ loading: false, error: error?.message ?? 'Kirish amalga oshmadi' });
+lib\auth.ts:149  →        console.log('[auth] signIn muvaffaqiyatli, user:', data.user.email);
+lib\auth.ts:158  →        if (!prof?.is_admin) {
+lib\auth.ts:159  →          console.warn('[auth] is_admin = false, signOut qilinmoqda');
+lib\auth.ts:165  →            error: 'Sizda admin huquqi yoʻq',
+lib\auth.ts:167  →          return { ok: false, error: 'Sizda admin huquqi yoʻq' };
+lib\auth.ts:170  →        // Session'ni shifrlab saqlash
+lib\auth.ts:176  →        console.log('[auth] signIn YAKUNLANDI muvaffaqiyatli');
+lib\auth.ts:204  →          .select('id, username, full_name, avatar_url, is_admin')
+lib\auth.ts:215  →          console.warn('[auth] refreshProfile: profile topilmadi');
+lib\auth.ts:220  →        console.log('[auth] refreshProfile: profile olindi, is_admin:', data.is_admin);
+lib\auth.ts:227  →            is_admin: data.is_admin ?? false,
+lib\local-auth.ts:14  →    | 'authenticated'; // hammasi joyida → Dashboard
+lib\local-auth.ts:35  →        'electronAPI mavjud emas. Bu dastur Electron oynasida ishlashi kerak.',
+lib\local-auth.ts:52  →          // PIN bor → lock holatini tekshiramiz
+lib\local-auth.ts:60  →          // Hech narsa yo'q → birinchi marta
+lib\supabase.ts:11  →   * is_admin = true bo'lganlarga admin amallarini ruxsat beradi.
+lib\supabase.ts:20  →      '.env faylida topilmadi. .env.example ga qarang.',
+lib\supabase.ts:28  →      detectSessionInUrl: false, // Electron'da URL hash auth yo'q
+routes\analytics.tsx:37  →              className="flex items-center gap-2 rounded-lg bg-gradient-admin px-4 py-2 text-sm font-semibold text-white shadow-lg transition-all hover:scale-[1.02]"
+routes\analytics.tsx:55  →                  ? 'border-b-2 border-admin-500 text-admin-300'
+routes\countries.tsx:76  →  // Davlat nomi variantlari (DB'da har xil saqlanishi mumkin)
+routes\countries.tsx:111  →    is_admin: boolean;
+routes\countries.tsx:141  →          setError("IP yozilgan profillar topilmadi yoki hammasi to\'ldirilgan");
+routes\countries.tsx:175  →          // Sahifani qayta yuklamasdan, state ni yangilaymiz
+routes\countries.tsx:193  →          alert(updated + ' ta profil yangilandi!');
+routes\countries.tsx:195  →          alert('Yangilanadigan profil topilmadi. Ular allaqachon aniqlanganmi yoki getGeo ishlamayaptimi?');
+routes\countries.tsx:216  →          // Har bir davlat uchun foydalanuvchilar sonini hisoblaymiz
+routes\countries.tsx:233  →          // DB da bor lekin bizning ro'yxatimizda yo'q davlatlarni qo'shamiz
+routes\countries.tsx:246  →          // Saralash: foydalanuvchisi borlar avval, keyin alifbo
+routes\countries.tsx:271  →          .select('id,email,username,full_name,avatar_url,is_banned,is_admin,created_at')
+routes\countries.tsx:285  →    // Filtr va qidiruv
+routes\countries.tsx:300  →          subtitle="Dunyo davlatlari — foydalanuvchilar joylashuvi bo'yicha"
+routes\countries.tsx:310  →            <div className="text-[10px] uppercase tracking-wider text-gold-700">Foydalanuvchi bor</div>
+routes\countries.tsx:328  →        {/* IP detect panel */}
+routes\countries.tsx:346  →        {/* Qidiruv va filter */}
+routes\countries.tsx:354  →              placeholder="Davlat nomi bo'yicha qidirish..."
+routes\countries.tsx:364  →                    ? 'bg-admin-500/10 text-admin-300 ring-1 ring-admin-500/30'
+routes\countries.tsx:367  →                {f === 'active' ? `Foydalanuvchi bor (${activeCount})` : `Hammasi (${ALL_COUNTRIES.length})`}
+routes\countries.tsx:379  →          <div className="rounded-lg border border-admin-900/40 bg-admin-950/30 px-3 py-3 text-sm text-admin-300">
+routes\countries.tsx:384  →            {search ? 'Davlat topilmadi' : 'Hech qanday davlat topilmadi'}
+routes\countries.tsx:447  →                  {/* Foydalanuvchilar */}
+routes\countries.tsx:452  →                          Foydalanuvchi topilmadi
+routes\countries.tsx:471  →                                  {u.is_admin && (
+routes\countries.tsx:472  →                                    <span className="rounded bg-admin-500/20 px-1 py-0.5 text-[9px] font-bold uppercase text-admin-300">Admin</span>
+routes\countries.tsx:475  →                                    <span className="rounded bg-admin-800/40 px-1 py-0.5 text-[9px] font-bold uppercase text-admin-400">Ban</span>
+routes\countries.tsx:482  →                              <span className="text-[10px] text-gold-700/50">Ko'rish →</span>
+routes\dashboard.tsx:10  →  import { LayoutDashboard } from 'lucide-react';
+routes\dashboard.tsx:20  →    total_credits_used: number;
+routes\dashboard.tsx:31  →    is_admin: boolean;
+routes\dashboard.tsx:48  →    failed:     'text-admin-400',
+routes\dashboard.tsx:52  →  export function DashboardPage() {
+routes\dashboard.tsx:99  →            .select('credits_remaining')
+routes\dashboard.tsx:102  →            .select('id, email, username, full_name, avatar_url, is_admin, created_at')
+routes\dashboard.tsx:111  →        const totalCreditsUsed = (credData ?? []).reduce((sum: number, r: any) => {
+routes\dashboard.tsx:112  →          return sum + Math.max(0, 100 - (r.credits_remaining ?? 0));
+routes\dashboard.tsx:123  →          total_credits_used: totalCreditsUsed,
+routes\dashboard.tsx:159  →          icon={LayoutDashboard}
+routes\dashboard.tsx:160  →          title="Dashboard"
+routes\dashboard.tsx:161  →          subtitle="Tizim umumiy holati va asosiy ko'rsatkichlar"
+routes\dashboard.tsx:170  →              Yangilash
+routes\dashboard.tsx:176  →          <div className="mb-4 rounded-lg border border-admin-900/40 bg-admin-950/30 px-3 py-2 text-sm text-admin-300">
+routes\dashboard.tsx:185  →            label="Jami foydalanuvchilar"
+routes\dashboard.tsx:193  →            label="Bugungi qo'shiqlar"
+routes\dashboard.tsx:201  →            label="Faol obunalar"
+routes\dashboard.tsx:209  →            value={stats?.total_credits_used ?? 0}
+routes\dashboard.tsx:210  →            accent="admin"
+routes\dashboard.tsx:215  →        {/* Ikkinchi qator — ogohlantirishlar */}
+routes\dashboard.tsx:218  →            {/* Flagged qo'shiqlar */}
+routes\dashboard.tsx:222  →                ? 'border-admin-900/40 bg-admin-950/20'
+routes\dashboard.tsx:225  →              <Flag className={cn('h-5 w-5', stats.songs_flagged > 0 ? 'text-admin-400' : 'text-gold-700')} />
+routes\dashboard.tsx:228  →                <div className={cn('text-xl font-bold', stats.songs_flagged > 0 ? 'text-admin-300' : 'text-gold-100')}>
+routes\dashboard.tsx:234  →            {/* Yangi feedback */}
+routes\dashboard.tsx:243  →                <div className="text-xs uppercase tracking-wider text-gold-700">Yangi feedback</div>
+routes\dashboard.tsx:261  →        {/* So'nggi faoliyat — 2 ustun */}
+routes\dashboard.tsx:263  →          {/* So'nggi foydalanuvchilar */}
+routes\dashboard.tsx:267  →                <Users className="h-3.5 w-3.5 text-admin-300" />
+routes\dashboard.tsx:283  →                Foydalanuvchilar yoʻq
+routes\dashboard.tsx:299  →                        {u.is_admin && (
+routes\dashboard.tsx:300  →                          <span className="ml-1.5 rounded bg-admin-500/20 px-1 py-0.5 text-[9px] font-bold uppercase text-admin-300">
+routes\dashboard.tsx:301  →                            Admin
+routes\dashboard.tsx:317  →          {/* So'nggi qo'shiqlar */}
+routes\dashboard.tsx:321  →                <Music className="h-3.5 w-3.5 text-admin-300" />
+routes\dashboard.tsx:377  →          Real-time · 30 soniyada avtomatik yangilanadi
+routes\genres.tsx:60  →        const h = [g.slug, g.name_uz, g.name_en, g.name_tr, g.name_az,
+routes\genres.tsx:77  →      showSuccess(`✅ Janr "${saved.name_uz}" saqlandi`);
+routes\genres.tsx:126  →      const { error } = await supabase.rpc('admin_reorder_genres', {
+routes\genres.tsx:133  →      showSuccess('✅ Tartib saqlandi');
+routes\genres.tsx:140  →          title="Janrlar boshqaruvi"
+routes\genres.tsx:147  →                Yangilash
+routes\genres.tsx:151  →                <Plus className="h-4 w-4" />Yangi janr
+routes\genres.tsx:163  →          <div className="mb-4 flex items-start gap-2 rounded-lg border border-admin-900/40 bg-admin-950/30 px-3 py-2 text-sm text-admin-300">
+routes\genres.tsx:177  →                <X className="h-3 w-3" />Bekor
+routes\genres.tsx:182  →                Saqlash
+routes\genres.tsx:188  →        {/* Til + qidiruv */}
+routes\genres.tsx:208  →              placeholder="Slug, nom bo'yicha qidiruv..."
+routes\genres.tsx:209  →              className="w-full rounded-lg border border-gold-900/40 bg-midnight-800/40 py-2 pl-9 pr-3 text-sm text-gold-100 placeholder:text-gold-700/40 focus:border-admin-500/60 focus:outline-none lg:w-[300px]" />
+routes\genres.tsx:220  →            {search ? "Hech narsa topilmadi" : "Janrlar yo'q"}
+routes\genres.tsx:228  →                <span className="flex-1">Nom & Slug</span>
+routes\genres.tsx:230  →                <span className="w-20">Holat</span>
+routes\genres.tsx:231  →                <span className="w-28 text-right">Amallar</span>
+routes\genres.tsx:257  →            {filtered.length} ta janr · <GripVertical className="inline h-3 w-3" /> ushlab tortib tartib o'zgartiring
+routes\genres.tsx:267  →            title="Janrni o'chirish" subtitle="Qaytarib bo'lmaydi" width="sm"
+routes\genres.tsx:272  →                  Bekor
+routes\genres.tsx:275  →                  className="flex items-center gap-2 rounded-lg bg-gradient-admin px-4 py-2 text-sm font-semibold text-white hover:scale-[1.02] disabled:opacity-50">
+routes\genres.tsx:277  →                  O'chirish
+routes\genres.tsx:283  →                ⚠️ <strong>{deleteTarget.name_uz}</strong> janri o'chiriladi.
+routes\genres.tsx:317  →          isDragOver && 'bg-admin-500/10 ring-2 ring-admin-500/40',
+routes\genres.tsx:333  →              {genre.slug}
+routes\genres.tsx:352  →              ? <><Eye className="h-3 w-3" />Faol</>
+routes\genres.tsx:353  →              : <><EyeOff className="h-3 w-3" />Yopiq</>}
+routes\genres.tsx:362  →            className="grid h-7 w-7 place-items-center rounded-md text-gold-700 hover:bg-admin-500/15 hover:text-admin-300">
+routes\login.tsx:19  →    const from = (location.state as any)?.from?.pathname || '/dashboard';
+routes\login.tsx:52  →            // Birinchi kirish — PIN o'rnatishga yo'naltir
+routes\login.tsx:61  →        setError(result.error || 'Kirish amalga oshmadi');
+routes\login.tsx:85  →          className="relative z-10 w-full max-w-md rounded-2xl border border-admin-900/30 bg-midnight-900/80 p-8 shadow-2xl shadow-black/60 backdrop-blur-xl"
+routes\login.tsx:89  →            <div className="mb-4 grid h-14 w-14 place-items-center rounded-xl bg-gradient-admin shadow-lg shadow-admin-900/40">
+routes\login.tsx:92  →            <h1 className="font-display text-2xl font-bold text-gold-100">Orhun AI Admin</h1>
+routes\login.tsx:93  →            <p className="mt-1 text-xs uppercase tracking-[0.3em] text-admin-400">Restricted Access</p>
+routes\login.tsx:102  →              placeholder="admin@example.com"
+routes\login.tsx:103  →              className="w-full rounded-lg border border-gold-900/40 bg-midnight-800/60 px-3 py-2.5 text-sm text-gold-100 placeholder:text-gold-700/40 focus:border-admin-500/60 focus:outline-none disabled:opacity-50"
+routes\login.tsx:115  →                className="w-full rounded-lg border border-gold-900/40 bg-midnight-800/60 px-3 py-2.5 pr-10 text-sm text-gold-100 placeholder:text-gold-700/40 focus:border-admin-500/60 focus:outline-none disabled:opacity-50"
+routes\login.tsx:125  →            <div className="mb-4 mt-3 flex items-start gap-2 rounded-lg border border-admin-900/40 bg-admin-950/30 px-3 py-2 text-sm text-admin-300">
+routes\login.tsx:135  →              'bg-gradient-admin text-white shadow-lg shadow-admin-900/40',
+routes\login.tsx:136  →              'hover:shadow-xl hover:shadow-admin-900/50',
+routes\login.tsx:143  →              'Kirish'
+routes\login.tsx:148  →            Faqat administrator huquqi bor foydalanuvchilar kirishi mumkin.
+routes\notifications.tsx:14  →  type BroadcastType = 'admin_announcement' | 'update' | 'warning' | 'credits_refreshed';
+routes\notifications.tsx:15  →  type Target = 'all' | 'active' | 'admins';
+routes\notifications.tsx:37  →    { value: 'admin_announcement', label: "Eʼlon",        icon: Megaphone,     color: 'amber'   },
+routes\notifications.tsx:38  →    { value: 'update',             label: 'Yangilanish',  icon: RefreshCcw,    color: 'blue'    },
+routes\notifications.tsx:39  →    { value: 'warning',            label: 'Ogohlantirish',icon: AlertTriangle, color: 'admin'   },
+routes\notifications.tsx:40  →    { value: 'credits_refreshed',  label: 'Credits',      icon: Sparkles,      color: 'emerald' },
+routes\notifications.tsx:44  →    { value: 'all',    label: 'Hammasi',     description: 'Barcha foydalanuvchilar' },
+routes\notifications.tsx:45  →    { value: 'active', label: 'Faollar',     description: 'Banlangan emaslar' },
+routes\notifications.tsx:46  →    { value: 'admins', label: 'Adminlar',    description: 'Faqat administratorlar' },
+routes\notifications.tsx:50  →    { value: 'uz', flag: 'https://flagcdn.com/w20/uz.png', name: "O'zbekcha (majburiy)" },
+routes\notifications.tsx:58  →    const [type, setType] = useState<BroadcastType>('admin_announcement');
+routes\notifications.tsx:77  →    // Tarix
+routes\notifications.tsx:82  →    // Target o'zgarsa recipients count yangilanadi
+routes\notifications.tsx:86  →          'admin_broadcast_count_recipients',
+routes\notifications.tsx:93  →    // Tarix yuklash
+routes\notifications.tsx:115  →    // Yuborish
+routes\notifications.tsx:121  →      const { data, error } = await supabase.rpc('admin_broadcast_notification', {
+routes\notifications.tsx:145  →      setSuccess(`✅ Xabar yuborildi — ${row?.recipients_count ?? 0} ta foydalanuvchiga`);
+routes\notifications.tsx:152  →      // Tarixni yangilash
+routes\notifications.tsx:160  →          title="Bildirishnomalar (Broadcast)"
+routes\notifications.tsx:161  →          subtitle="Massiv xabar yuborish, 4 til, tarix"
+routes\notifications.tsx:172  →          <div className="mb-4 flex items-start gap-2 rounded-lg border border-admin-900/40 bg-admin-950/30 px-3 py-2 text-sm text-admin-300">
+routes\notifications.tsx:192  →                        ? 'border-admin-500/60 bg-admin-500/10 text-admin-300'
+routes\notifications.tsx:214  →                        ? 'border-admin-500/60 bg-admin-500/10'
+routes\notifications.tsx:220  →                      target === t.value ? 'text-admin-300' : 'text-gold-100',
+routes\notifications.tsx:235  →                  ta foydalanuvchiga
+routes\notifications.tsx:255  →                          ? 'bg-admin-500/10 text-admin-300 ring-1 ring-admin-500/30'
+routes\notifications.tsx:262  →                        <span className="text-[9px] text-admin-400">*</span>
+routes\notifications.tsx:280  →                  placeholder={`Sarlavha (${activeLang.toUpperCase()})${activeLang === 'uz' ? ' — majburiy' : ''}`}
+routes\notifications.tsx:282  →                  className="w-full rounded-md border border-gold-900/40 bg-midnight-800/40 px-3 py-2 text-sm text-gold-100 placeholder:text-gold-700/40 focus:border-admin-500/60 focus:outline-none"
+routes\notifications.tsx:289  →                  placeholder={`Matn (${activeLang.toUpperCase()})${activeLang === 'uz' ? ' — majburiy' : ''}`}
+routes\notifications.tsx:292  →                  className="w-full resize-none rounded-md border border-gold-900/40 bg-midnight-800/40 px-3 py-2 text-sm text-gold-100 placeholder:text-gold-700/40 focus:border-admin-500/60 focus:outline-none"
+routes\notifications.tsx:312  →                className="w-full rounded-md border border-gold-900/40 bg-midnight-800/40 px-3 py-2 text-sm text-gold-100 placeholder:text-gold-700/40 focus:border-admin-500/60 focus:outline-none"
+routes\notifications.tsx:320  →            <FormSection title="5. Email yuborish" icon={Send}>
+routes\notifications.tsx:326  →                  className="mt-0.5 h-4 w-4 cursor-pointer accent-admin-500"
+routes\notifications.tsx:330  →                    Email bilan ham yuborish
+routes\notifications.tsx:333  →                    In-app notification bilan birga email ham yuboriladi. Email yuborish Python API (Faza 7) ulangach faollashadi.
+routes\notifications.tsx:346  →                'bg-gradient-admin text-white shadow-lg shadow-admin-900/40',
+routes\notifications.tsx:347  →                'hover:shadow-xl hover:shadow-admin-900/50',
+routes\notifications.tsx:352  →              Yuborish ({recipientsCount ?? '...'} ta foydalanuvchiga)
+routes\notifications.tsx:360  →              Preview — foydalanuvchi koʻrinishi
+routes\notifications.tsx:375  →        {/* ============ Tarix ============ */}
+routes\notifications.tsx:378  →            <Calendar className="h-4 w-4 text-admin-300" />
+routes\notifications.tsx:379  →            Yuborilgan xabarlar tarixi
+routes\notifications.tsx:444  →        {/* === Tasdiqlash modali === */}
+routes\notifications.tsx:448  →          title="Yuborishni tasdiqlang"
+routes\notifications.tsx:449  →          subtitle={`${recipientsCount ?? 0} ta foydalanuvchiga yuboriladi`}
+routes\notifications.tsx:459  →                Bekor qilish
+routes\notifications.tsx:465  →                className="flex items-center gap-2 rounded-lg bg-gradient-admin px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-admin-900/40 transition-all hover:shadow-xl disabled:opacity-50"
+routes\notifications.tsx:472  →                Tasdiqlash va yuborish
+routes\notifications.tsx:494  →        {/* === Tarix detal modali === */}
+routes\notifications.tsx:500  →            subtitle={`${formatDateTime(selectedHistory.created_at)} · ${selectedHistory.recipients_count} ta foydalanuvchi`}
+routes\notifications.tsx:562  →          <Icon className="h-3.5 w-3.5 text-admin-300" />
+routes\pin-login.tsx:11  →   * PinLoginPage — 8 belgili alfanumerik PIN bilan kirish
+routes\pin-login.tsx:65  →        navigate('/dashboard', { replace: true });
+routes\pin-login.tsx:89  →        <div className="relative z-10 w-full max-w-sm rounded-2xl border border-admin-900/30 bg-midnight-900/80 p-8 shadow-2xl shadow-black/60 backdrop-blur-xl">
+routes\pin-login.tsx:95  →              isLocked ? 'bg-admin-700 shadow-admin-900/40' : 'bg-gradient-admin shadow-admin-900/40',
+routes\pin-login.tsx:115  →            /* Blokirovka holati */
+routes\pin-login.tsx:117  →              <div className="font-mono text-5xl font-bold tracking-widest text-admin-300">
+routes\pin-login.tsx:142  →                      ? 'border-admin-500/60 focus:border-admin-400'
+routes\pin-login.tsx:158  →                    i < pin.length ? 'bg-admin-400' : 'bg-gold-900/40',
+routes\pin-login.tsx:171  →                <div className="mt-4 flex items-start gap-2 rounded-lg border border-admin-900/40 bg-admin-950/30 px-3 py-2 text-sm text-admin-300">
+routes\pin-login.tsx:185  →                className="mt-5 flex w-full items-center justify-center rounded-lg bg-gradient-admin px-4 py-2.5 text-sm font-semibold text-white shadow-lg disabled:opacity-50">
+routes\pin-login.tsx:186  →                {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Kirish'}
+routes\pin-login.tsx:194  →            Boshqa hisob bilan kirish
+routes\pin-setup.tsx:31  →      if (val.length < PIN_LENGTH) return `PIN kamida ${PIN_LENGTH} belgi bolishi kerak`;
+routes\pin-setup.tsx:35  →      if (!hasLetter || !hasDigit) return "PIN kamida 1 ta harf va 1 ta raqam bolishi kerak";
+routes\pin-setup.tsx:70  →        navigate('/dashboard', { replace: true });
+routes\pin-setup.tsx:87  →    const strengthColor = ['', 'bg-admin-500', 'bg-orange-500', 'bg-amber-400', 'bg-emerald-400', 'bg-emerald-300'][Math.min(strength, 5)];
+routes\pin-setup.tsx:96  →        <div className="relative z-10 w-full max-w-md rounded-2xl border border-admin-900/30 bg-midnight-900/80 p-8 shadow-2xl shadow-black/60 backdrop-blur-xl">
+routes\pin-setup.tsx:100  →            <div className="mb-4 grid h-14 w-14 place-items-center rounded-xl bg-gradient-admin shadow-lg shadow-admin-900/40">
+routes\pin-setup.tsx:104  →              {step === 'create' ? 'PIN yaratish' : 'PIN tasdiqlash'}
+routes\pin-setup.tsx:115  →            <div className={cn('h-1.5 flex-1 rounded-full', step === 'create' ? 'bg-admin-500' : 'bg-gold-900/40')} />
+routes\pin-setup.tsx:116  →            <div className={cn('h-1.5 flex-1 rounded-full', step === 'confirm' ? 'bg-admin-500' : 'bg-gold-900/40')} />
+routes\pin-setup.tsx:123  →                Yangi PIN
+routes\pin-setup.tsx:130  →                  placeholder="Masalan: Admin2024"
+routes\pin-setup.tsx:137  →                      ? 'border-admin-500/60 focus:border-admin-400'
+routes\pin-setup.tsx:182  →                <div className="mt-3 flex items-start gap-2 rounded-lg border border-admin-900/40 bg-admin-950/30 px-3 py-2 text-sm text-admin-300">
+routes\pin-setup.tsx:190  →                className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-admin px-4 py-2.5 text-sm font-semibold text-white shadow-lg disabled:cursor-not-allowed disabled:opacity-50">
+routes\pin-setup.tsx:211  →                      ? 'border-admin-500/60 focus:border-admin-400'
+routes\pin-setup.tsx:222  →                <div className="mt-3 flex items-start gap-2 rounded-lg border border-admin-900/40 bg-admin-950/30 px-3 py-2 text-sm text-admin-300">
+routes\pin-setup.tsx:230  →                className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-admin px-4 py-2.5 text-sm font-semibold text-white shadow-lg disabled:cursor-not-allowed disabled:opacity-50">
+routes\pin-setup.tsx:244  →            🔒 PIN ushbu kompyuterda DPAPI orqali shifrlanadi. Keyingi kirish uchun shu PIN kerak.
+routes\songs.tsx:11  →    type AdminSongRow,
+routes\songs.tsx:18  →    { key: 'all',         label: 'Hammasi' },
+routes\songs.tsx:38  →    const [songs, setSongs] = useState<AdminSongRow[]>([]);
+routes\songs.tsx:44  →    const [selected, setSelected] = useState<AdminSongRow | null>(null);
+routes\songs.tsx:55  →      // songs + profiles join (RLS bilan admin barcha qoʻshiqlarni koʻradi)
+routes\songs.tsx:71  →        const mapped: AdminSongRow[] = (data ?? []).map((row: any) => ({
+routes\songs.tsx:106  →    // Filtrlash + qidiruv
+routes\songs.tsx:141  →    const togglePlay = (song: AdminSongRow) => {
+routes\songs.tsx:165  →    const handleSongUpdated = (patch: Partial<AdminSongRow>) => {
+routes\songs.tsx:192  →              Yangilash
+routes\songs.tsx:197  →        {/* Filter pills + qidiruv */}
+routes\songs.tsx:208  →                    ? 'bg-admin-500/10 text-admin-300 ring-1 ring-admin-500/30'
+routes\songs.tsx:218  →                      ? 'bg-admin-500/30 text-admin-100'
+routes\songs.tsx:234  →              placeholder="Sarlavha, prompt, muallif boʻyicha qidiruv..."
+routes\songs.tsx:235  →              className="w-full rounded-lg border border-gold-900/40 bg-midnight-800/40 py-2 pl-9 pr-3 text-sm text-gold-100 placeholder:text-gold-700/40 focus:border-admin-500/60 focus:outline-none lg:w-[320px]"
+routes\songs.tsx:242  →          <div className="mb-4 rounded-lg border border-admin-900/40 bg-admin-950/30 px-3 py-2 text-sm text-admin-300">
+routes\songs.tsx:255  →              {search ? "Qidiruv boʻyicha hech narsa topilmadi" : "Qoʻshiqlar yoʻq"}
+routes\songs.tsx:317  →    song: AdminSongRow;
+routes\songs.tsx:326  →        case 'failed':     return 'admin';
+routes\songs.tsx:336  →          song.is_flagged && "bg-admin-950/10",
+routes\songs.tsx:349  →                ? 'bg-admin-500 text-white'
+routes\songs.tsx:370  →                  <Flag className="h-3 w-3 shrink-0 text-admin-400" />
+routes\subscriptions.tsx:93  →      setSuccess(`✅ Tarif "${saved.name_uz}" saqlandi`);
+routes\subscriptions.tsx:132  →      setSuccess(`✅ Tarif "${deleteTarget.name_uz}" o'chirildi`);
+routes\subscriptions.tsx:154  →          title="Obuna tariflari"
+routes\subscriptions.tsx:155  →          subtitle="Monthly / 6-Month / Yearly tariflarni 4 valyutada boshqarish"
+routes\subscriptions.tsx:165  →                Yangilash
+routes\subscriptions.tsx:173  →                Yangi tarif
+routes\subscriptions.tsx:186  →          <div className="mb-4 flex items-start gap-2 rounded-lg border border-admin-900/40 bg-admin-950/30 px-3 py-2 text-sm text-admin-300">
+routes\subscriptions.tsx:243  →            Hali tarif qo'shilmagan
+routes\subscriptions.tsx:290  →            title="Tarifni o'chirish"
+routes\subscriptions.tsx:301  →                  Bekor qilish
+routes\subscriptions.tsx:307  →                  className="flex items-center gap-2 rounded-lg bg-gradient-admin px-4 py-2 text-sm font-semibold text-white shadow-lg transition-all hover:scale-[1.02] disabled:opacity-50"
+routes\subscriptions.tsx:310  →                  O'chirish
+routes\subscriptions.tsx:317  →                ⚠️ <strong>{deleteTarget.name_uz}</strong> tarifi butunlay o'chiriladi va saytda chiqmaydi.
+routes\subscriptions.tsx:391  →                  <Badge variant="admin" icon={<Tag className="h-3 w-3" />}>
+routes\subscriptions.tsx:401  →            <span className="font-semibold">{plan.credits_per_period}</span>
+routes\subscriptions.tsx:409  →              Hali feature yo'q
+routes\subscriptions.tsx:431  →              Tahrirlash
+routes\subscriptions.tsx:449  →              title={plan.is_active ? "Faolsizlantirish" : "Faollashtirish"}
+routes\subscriptions.tsx:462  →              title="O'chirish"
+routes\subscriptions.tsx:463  →              className="grid h-7 w-7 place-items-center rounded-md text-gold-700 transition-colors hover:bg-admin-500/15 hover:text-admin-300"
+routes\subscriptions.tsx:469  →            <span className="font-mono">{plan.slug}</span>
+routes\subscriptions.tsx:470  →            {plan.updated_at && <span>Yangilangan: {timeAgo(plan.updated_at)}</span>}
+routes\users.tsx:12  →    type AdminUserRow,
+routes\users.tsx:16  →  type FilterKey = 'all' | 'active' | 'admin' | 'banned';
+routes\users.tsx:19  →    { key: 'all',    label: 'Hammasi',    color: 'text-gold-300' },
+routes\users.tsx:20  →    { key: 'active', label: 'Faol',       color: 'text-emerald-300' },
+routes\users.tsx:21  →    { key: 'admin',  label: 'Adminlar',   color: 'text-admin-300' },
+routes\users.tsx:28  →    const [users, setUsers] = useState<AdminUserRow[]>([]);
+routes\users.tsx:34  →    const [selected, setSelected] = useState<AdminUserRow | null>(null);
+routes\users.tsx:45  →          is_admin, is_banned, banned_at, ban_reason,
+routes\users.tsx:46  →          credits_remaining, credits_reset_at,
+routes\users.tsx:56  →        setUsers((data as AdminUserRow[]) ?? []);
+routes\users.tsx:66  →    // Filtrlash + qidiruv (client-side, 500 user'gacha tez ishlaydi)
+routes\users.tsx:71  →        if (filter === 'active' && (u.is_banned || u.is_admin)) return false;
+routes\users.tsx:72  →        if (filter === 'admin' && !u.is_admin) return false;
+routes\users.tsx:89  →        active: users.filter((u) => !u.is_banned && !u.is_admin).length,
+routes\users.tsx:90  →        admin:  users.filter((u) => u.is_admin).length,
+routes\users.tsx:95  →    const handleUserUpdated = (patch: Partial<AdminUserRow>) => {
+routes\users.tsx:106  →          title="Foydalanuvchilar"
+routes\users.tsx:118  →              Yangilash
+routes\users.tsx:123  →        {/* Filter tabs + qidiruv */}
+routes\users.tsx:135  →                    ? 'bg-admin-500/10 text-admin-300 ring-1 ring-admin-500/30'
+routes\users.tsx:145  →                      ? 'bg-admin-500/30 text-admin-100'
+routes\users.tsx:155  →          {/* Qidiruv */}
+routes\users.tsx:162  →              placeholder="Email yoki username bo'yicha qidiruv..."
+routes\users.tsx:163  →              className="w-full rounded-lg border border-gold-900/40 bg-midnight-800/40 py-2 pl-9 pr-3 text-sm text-gold-100 placeholder:text-gold-700/40 focus:border-admin-500/60 focus:outline-none lg:w-[320px]"
+routes\users.tsx:170  →          <div className="mb-4 rounded-lg border border-admin-900/40 bg-admin-950/30 px-3 py-2 text-sm text-admin-300">
+routes\users.tsx:183  →              {search ? "Qidiruv bo'yicha hech narsa topilmadi" : "Foydalanuvchilar yoʻq"}
+routes\users.tsx:190  →                    <th className="px-4 py-3 font-semibold">Foydalanuvchi</th>
+routes\users.tsx:192  →                    <th className="px-4 py-3 font-semibold">Holat</th>
+routes\users.tsx:193  →                    <th className="px-4 py-3 font-semibold">Credits</th>
+routes\users.tsx:194  →                    <th className="px-4 py-3 font-semibold">Oxirgi kirish</th>
+routes\users.tsx:211  →            {filtered.length} ta foydalanuvchi koʻrsatildi
+routes\users.tsx:232  →  function UserRow({ user, onClick }: { user: AdminUserRow; onClick: () => void }) {
+routes\users.tsx:264  →            {user.is_admin && (
+routes\users.tsx:265  →              <Badge variant="admin" icon={<Shield className="h-3 w-3" />}>
+routes\users.tsx:266  →                Admin
+routes\users.tsx:274  →            {!user.is_admin && !user.is_banned && (
+routes\users.tsx:275  →              <Badge variant="emerald">Faol</Badge>
+routes\users.tsx:282  →            {user.credits_remaining ?? 0}

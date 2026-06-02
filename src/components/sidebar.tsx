@@ -13,26 +13,23 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
 import { cn } from '@/lib/utils';
-
-interface NavItem {
-  to: string;
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
-}
-
-const NAV_ITEMS: NavItem[] = [
-  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { to: '/users', label: 'Foydalanuvchilar', icon: Users },
-  { to: '/songs', label: 'Qoʻshiqlar', icon: Music },
-  { to: '/countries', label: 'Davlatlar', icon: Globe },
-  { to: '/notifications', label: 'Bildirishnomalar', icon: Bell },
-  { to: '/subscriptions', label: 'Obunalar', icon: CreditCard },
-  { to: '/genres', label: 'Janrlar', icon: Tags },
-  { to: '/analytics', label: 'Analitika', icon: BarChart3 },
-];
+import { useT, useI18nStore, LOCALES } from '@/lib/i18n';
 
 export function Sidebar() {
   const { profile, signOut } = useAuth();
+  const t = useT();
+  const { locale, setLocale } = useI18nStore();
+
+  const NAV_ITEMS = [
+    { to: '/dashboard',      label: t('sidebar_dashboard'),     icon: LayoutDashboard },
+    { to: '/users',          label: t('sidebar_users'),         icon: Users },
+    { to: '/songs',          label: t('sidebar_songs'),         icon: Music },
+    { to: '/countries',      label: t('sidebar_countries'),     icon: Globe },
+    { to: '/notifications',  label: t('sidebar_notifications'), icon: Bell },
+    { to: '/subscriptions',  label: t('sidebar_subscriptions'), icon: CreditCard },
+    { to: '/genres',         label: t('sidebar_genres'),        icon: Tags },
+    { to: '/analytics',      label: t('sidebar_analytics'),     icon: BarChart3 },
+  ];
 
   return (
     <aside className="flex h-full w-64 flex-col border-r border-admin-900/30 bg-midnight-950">
@@ -46,9 +43,29 @@ export function Sidebar() {
             Orhun AI
           </span>
           <span className="mt-1 text-[10px] font-bold uppercase tracking-[0.25em] text-admin-400">
-            Admin Panel
+            {t('sidebar_admin_panel')}
           </span>
         </div>
+      </div>
+
+      {/* Til tanlash */}
+      <div className="flex items-center justify-center gap-1 border-b border-admin-900/20 px-3 py-2">
+        {LOCALES.map((l) => (
+          <button
+            key={l.value}
+            type="button"
+            onClick={() => setLocale(l.value)}
+            className={cn(
+              'flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors',
+              locale === l.value
+                ? 'bg-gold-500/15 text-gold-300 ring-1 ring-gold-500/30'
+                : 'text-gold-300/70 hover:bg-midnight-700/40 hover:text-gold-100',
+            )}
+          >
+            <img src={l.flag} alt={l.label} className="h-3.5 w-5 rounded-sm object-cover" />
+            {l.label}
+          </button>
+        ))}
       </div>
 
       {/* Navigatsiya */}
@@ -80,11 +97,7 @@ export function Sidebar() {
         <div className="mb-2 flex items-center gap-3 rounded-lg px-3 py-2">
           <div className="grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-full border border-admin-500/40 bg-admin-900/30">
             {profile?.avatar_url ? (
-              <img
-                src={profile.avatar_url}
-                alt=""
-                className="h-full w-full object-cover"
-              />
+              <img src={profile.avatar_url} alt="" className="h-full w-full object-cover" />
             ) : (
               <span className="text-sm font-bold text-admin-300">
                 {(profile?.full_name || profile?.email || 'A')[0].toUpperCase()}
@@ -96,7 +109,7 @@ export function Sidebar() {
               {profile?.full_name || profile?.email || 'Admin'}
             </div>
             <div className="truncate text-[10px] text-admin-400">
-              ADMINISTRATOR
+              {t('sidebar_administrator')}
             </div>
           </div>
         </div>
@@ -106,7 +119,7 @@ export function Sidebar() {
           className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-red-300/80 transition-colors hover:bg-red-950/30 hover:text-red-200"
         >
           <LogOut className="h-4 w-4" />
-          Chiqish
+          {t('sidebar_logout')}
         </button>
       </div>
     </aside>

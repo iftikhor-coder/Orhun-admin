@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Modal } from '@/components/ui/modal';
 import { GenreEditorModal, type Genre } from '@/components/genres/genre-editor-modal';
 import { cn, timeAgo } from '@/lib/utils';
+import { useT } from '@/lib/i18n';
 
 type Lang = 'uz' | 'en' | 'tr' | 'az';
 
@@ -20,6 +21,7 @@ const LANGS: { value: Lang; label: string; flag: string }[] = [
 ];
 
 export function GenresPage() {
+  const t = useT();
   const [genres, setGenres] = useState<Genre[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -27,13 +29,10 @@ export function GenresPage() {
   const [success, setSuccess] = useState('');
   const [search, setSearch] = useState('');
   const [lang, setLang] = useState<Lang>('uz');
-
   const [editorGenre, setEditorGenre] = useState<Genre | null>(null);
   const [editorOpen, setEditorOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Genre | null>(null);
   const [deleting, setDeleting] = useState(false);
-
-  // Drag-and-drop
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [dragOverId, setDragOverId] = useState<string | null>(null);
   const [reordering, setReordering] = useState(false);
@@ -64,9 +63,7 @@ export function GenresPage() {
     });
   }, [genres, search]);
 
-  const showSuccess = (msg: string) => {
-    setSuccess(msg); setTimeout(() => setSuccess(''), 4000);
-  };
+  const showSuccess = (msg: string) => { setSuccess(msg); setTimeout(() => setSuccess(''), 4000); };
 
   const handleSaved = (saved: Genre) => {
     setGenres((prev) => {
@@ -74,7 +71,7 @@ export function GenresPage() {
       if (idx >= 0) { const c = [...prev]; c[idx] = saved; return c; }
       return [...prev, saved].sort((a, b) => a.sort_order - b.sort_order);
     });
-    showSuccess(`✅ Janr "${saved.name_uz}" saqlandi`);
+    showSuccess(`✅ "${saved.name_uz}" ${t('genres_saved')}`);
   };
 
   const handleToggleActive = async (genre: Genre) => {
@@ -94,11 +91,10 @@ export function GenresPage() {
     setDeleting(false);
     if (error) { setError(error.message); setDeleteTarget(null); return; }
     setGenres((prev) => prev.filter((g) => g.id !== deleteTarget.id));
-    showSuccess(`✅ "${deleteTarget.name_uz}" oʻchirildi`);
+    showSuccess(`✅ "${deleteTarget.name_uz}" ${t('genres_deleted')}`);
     setDeleteTarget(null);
   };
 
-  // Drag-and-drop
   const handleDragStart = (id: string) => setDraggedId(id);
   const handleDragOver = (e: React.DragEvent, id: string) => {
     e.preventDefault();
@@ -130,25 +126,25 @@ export function GenresPage() {
     if (error) { setError(error.message); return; }
     setGenres((prev) => prev.map((g, i) => ({ ...g, sort_order: i + 1 })));
     setOrderChanged(false);
-    showSuccess('✅ Tartib saqlandi');
+    showSuccess(`✅ ${t('genres_order_saved')}`);
   };
 
   return (
     <div className="p-6 lg:p-8">
       <PageHeader
         icon={Tags}
-        title="Janrlar boshqaruvi"
-        subtitle="4 til (UZ/EN/TR/AZ), hybrid prompt, sort order"
+        title={t('genres_title')}
+        subtitle={t('genres_subtitle')}
         action={
           <div className="flex gap-2">
             <button type="button" onClick={() => loadGenres(true)} disabled={refreshing}
               className="flex items-center gap-2 rounded-lg border border-gold-900/40 bg-midnight-800/40 px-3 py-2 text-sm text-gold-300 hover:bg-midnight-700/40 disabled:opacity-50">
               <RefreshCw className={cn('h-3.5 w-3.5', refreshing && 'animate-spin')} />
-              Yangilash
+              {t('refresh')}
             </button>
             <button type="button" onClick={() => { setEditorGenre(null); setEditorOpen(true); }}
               className="flex items-center gap-2 rounded-lg bg-gradient-gold px-4 py-2 text-sm font-semibold text-midnight-950 shadow-lg hover:scale-[1.02]">
-              <Plus className="h-4 w-4" />Yangi janr
+              <Plus className="h-4 w-4" />{t('genres_new')}
             </button>
           </div>
         }
@@ -165,30 +161,28 @@ export function GenresPage() {
         </div>
       )}
 
-      {/* Tartib o'zgardi banneri */}
       {orderChanged && (
         <div className="mb-4 flex items-center justify-between gap-3 rounded-lg border border-amber-900/40 bg-amber-950/20 px-4 py-3">
           <div className="flex items-center gap-2 text-sm text-amber-200">
-            <GripVertical className="h-4 w-4" />Tartib o'zgartirildi. Saqlanmagan.
+            <GripVertical className="h-4 w-4" />{t('genres_order_changed')}
           </div>
           <div className="flex gap-2">
             <button type="button" onClick={() => loadGenres(true)} disabled={reordering}
               className="flex items-center gap-1.5 rounded-md bg-midnight-700/40 px-3 py-1.5 text-xs text-gold-100/80 hover:bg-midnight-700/60 disabled:opacity-50">
-              <X className="h-3 w-3" />Bekor
+              <X className="h-3 w-3" />{t('cancel')}
             </button>
             <button type="button" onClick={saveOrder} disabled={reordering}
               className="flex items-center gap-1.5 rounded-md bg-gradient-gold px-3 py-1.5 text-xs font-semibold text-midnight-950 hover:scale-[1.02] disabled:opacity-50">
               {reordering ? <Loader2 className="h-3 w-3 animate-spin" /> : <Save className="h-3 w-3" />}
-              Saqlash
+              {t('save')}
             </button>
           </div>
         </div>
       )}
 
-      {/* Til + qidiruv */}
       <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xs uppercase tracking-wider text-gold-700">Til:</span>
+          <span className="text-xs uppercase tracking-wider text-gold-700">{t('genres_lang')}</span>
           <div className="flex gap-1">
             {LANGS.map((l) => (
               <button key={l.value} type="button" onClick={() => setLang(l.value)}
@@ -205,38 +199,34 @@ export function GenresPage() {
         <div className="relative">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gold-700" />
           <input type="text" value={search} onChange={(e) => setSearch(e.target.value)}
-            placeholder="Slug, nom bo'yicha qidiruv..."
+            placeholder={t('genres_search_placeholder')}
             className="w-full rounded-lg border border-gold-900/40 bg-midnight-800/40 py-2 pl-9 pr-3 text-sm text-gold-100 placeholder:text-gold-700/40 focus:border-admin-500/60 focus:outline-none lg:w-[300px]" />
         </div>
       </div>
 
-      {/* Jadval */}
       {loading ? (
         <div className="flex items-center justify-center py-20 text-gold-700">
           <Loader2 className="h-6 w-6 animate-spin" />
         </div>
       ) : filtered.length === 0 ? (
         <div className="rounded-xl border border-dashed border-gold-900/40 bg-midnight-900/30 py-12 text-center text-sm text-gold-700">
-          {search ? "Hech narsa topilmadi" : "Janrlar yo'q"}
+          {search ? t('genres_search_empty') : t('genres_empty')}
         </div>
       ) : (
         <div className="overflow-hidden rounded-xl border border-gold-900/30 bg-midnight-900/40">
           <div className="border-b border-gold-900/30 bg-midnight-950/60 px-4 py-2.5">
             <div className="flex items-center gap-3 text-[10px] uppercase tracking-wider text-gold-700">
-              <span className="w-10">#</span>
-              <span className="w-10">Ikona</span>
-              <span className="flex-1">Nom & Slug</span>
-              <span className="w-20">Hybrid</span>
-              <span className="w-20">Holat</span>
-              <span className="w-28 text-right">Amallar</span>
+              <span className="w-10">{t('genres_col_num')}</span>
+              <span className="w-10">{t('genres_col_icon')}</span>
+              <span className="flex-1">{t('genres_col_name')}</span>
+              <span className="w-20">{t('genres_col_hybrid')}</span>
+              <span className="w-20">{t('genres_col_status')}</span>
+              <span className="w-28 text-right">{t('genres_col_actions')}</span>
             </div>
           </div>
           {filtered.map((genre, idx) => (
             <GenreRow
-              key={genre.id}
-              genre={genre}
-              lang={lang}
-              index={idx}
+              key={genre.id} genre={genre} lang={lang} index={idx}
               isDragging={draggedId === genre.id}
               isDragOver={dragOverId === genre.id && !!draggedId}
               onDragStart={() => handleDragStart(genre.id!)}
@@ -247,6 +237,7 @@ export function GenresPage() {
               onEdit={() => { setEditorGenre(genre); setEditorOpen(true); }}
               onDelete={() => setDeleteTarget(genre)}
               onToggleActive={() => handleToggleActive(genre)}
+              t={t}
             />
           ))}
         </div>
@@ -254,33 +245,32 @@ export function GenresPage() {
 
       {filtered.length > 0 && (
         <div className="mt-3 text-xs text-gold-700">
-          {filtered.length} ta janr · <GripVertical className="inline h-3 w-3" /> ushlab tortib tartib o'zgartiring
+          {filtered.length} ta janr · <GripVertical className="inline h-3 w-3" /> {t('genres_drag_hint')}
         </div>
       )}
 
-      <GenreEditorModal
-        genre={editorGenre} open={editorOpen}
+      <GenreEditorModal genre={editorGenre} open={editorOpen}
         onClose={() => setEditorOpen(false)} onSaved={handleSaved} />
 
       {deleteTarget && (
         <Modal open={!!deleteTarget} onClose={() => setDeleteTarget(null)}
-          title="Janrni o'chirish" subtitle="Qaytarib bo'lmaydi" width="sm"
+          title={t('genres_delete_title')} subtitle={t('genres_delete_subtitle')} width="sm"
           footer={
             <div className="flex justify-end gap-2">
               <button type="button" onClick={() => setDeleteTarget(null)} disabled={deleting}
                 className="rounded-lg bg-midnight-700/40 px-4 py-2 text-sm text-gold-100/80 hover:bg-midnight-700/60 disabled:opacity-50">
-                Bekor
+                {t('cancel')}
               </button>
               <button type="button" onClick={handleDelete} disabled={deleting}
                 className="flex items-center gap-2 rounded-lg bg-gradient-admin px-4 py-2 text-sm font-semibold text-white hover:scale-[1.02] disabled:opacity-50">
                 {deleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-                O'chirish
+                {t('delete')}
               </button>
             </div>
           }>
           <div className="p-5">
             <div className="rounded-lg border border-amber-900/40 bg-amber-950/20 p-3 text-sm text-amber-200">
-              ⚠️ <strong>{deleteTarget.name_uz}</strong> janri o'chiriladi.
+              ⚠️ <strong>{deleteTarget.name_uz}</strong> {t('genres_delete_warning')}
             </div>
           </div>
         </Modal>
@@ -296,19 +286,19 @@ interface GenreRowProps {
   onDragLeave: () => void; onDrop: (e: React.DragEvent) => void;
   onDragEnd: () => void; onEdit: () => void;
   onDelete: () => void; onToggleActive: () => void;
+  t: (k: any) => string;
 }
 
 function GenreRow({
   genre, lang, index, isDragging, isDragOver,
   onDragStart, onDragOver, onDragLeave, onDrop, onDragEnd,
-  onEdit, onDelete, onToggleActive,
+  onEdit, onDelete, onToggleActive, t,
 }: GenreRowProps) {
   const name = genre[`name_${lang}` as keyof Genre] as string;
   const description = genre[`description_${lang}` as keyof Genre] as string | null;
 
   return (
-    <div
-      draggable
+    <div draggable
       onDragStart={onDragStart} onDragOver={onDragOver}
       onDragLeave={onDragLeave} onDrop={onDrop} onDragEnd={onDragEnd}
       className={cn(
@@ -316,8 +306,7 @@ function GenreRow({
         isDragging && 'opacity-30',
         isDragOver && 'bg-admin-500/10 ring-2 ring-admin-500/40',
         !genre.is_active && 'opacity-50',
-      )}
-    >
+      )}>
       <div className="cursor-grab text-gold-700/60 hover:text-gold-300 active:cursor-grabbing">
         <GripVertical className="h-4 w-4" />
       </div>
@@ -329,13 +318,9 @@ function GenreRow({
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <span className="truncate text-sm font-semibold text-gold-100">{name || '—'}</span>
-          <code className="rounded bg-midnight-800/60 px-1.5 py-0.5 font-mono text-[10px] text-gold-700">
-            {genre.slug}
-          </code>
+          <code className="rounded bg-midnight-800/60 px-1.5 py-0.5 font-mono text-[10px] text-gold-700">{genre.slug}</code>
         </div>
-        {description && (
-          <div className="mt-0.5 line-clamp-1 text-[11px] text-gold-700">{description}</div>
-        )}
+        {description && <div className="mt-0.5 line-clamp-1 text-[11px] text-gold-700">{description}</div>}
       </div>
       <div className="w-20">
         {genre.is_hybrid
@@ -349,8 +334,8 @@ function GenreRow({
               ? 'bg-emerald-500/15 text-emerald-300 hover:bg-emerald-500/25'
               : 'bg-white/5 text-gold-700/70 hover:bg-white/10')}>
           {genre.is_active
-            ? <><Eye className="h-3 w-3" />Faol</>
-            : <><EyeOff className="h-3 w-3" />Yopiq</>}
+            ? <><Eye className="h-3 w-3" />{t('active')}</>
+            : <><EyeOff className="h-3 w-3" />{t('inactive')}</>}
         </button>
       </div>
       <div className="flex w-28 items-center justify-end gap-1">

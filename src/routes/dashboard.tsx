@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
   Users, Music, CreditCard, Sparkles, RefreshCw, TrendingUp,
-  Clock, ShieldAlert, Flag, Bell, Loader2, ChevronRight,
+  Clock, Flag, Bell, Loader2,
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { PageHeader } from '@/components/ui/page-header';
 import { StatCard } from '@/components/ui/stat-card';
 import { timeAgo, cn } from '@/lib/utils';
 import { LayoutDashboard } from 'lucide-react';
+import { useT } from '@/lib/i18n';
 
 interface DashStats {
   total_users:        number;
@@ -50,6 +51,7 @@ const STATUS_COLOR: Record<string, string> = {
 };
 
 export function DashboardPage() {
+  const t = useT();
   const [stats,       setStats]       = useState<DashStats | null>(null);
   const [recentUsers, setRecentUsers] = useState<RecentUser[]>([]);
   const [recentSongs, setRecentSongs] = useState<RecentSong[]>([]);
@@ -126,7 +128,6 @@ export function DashboardPage() {
       });
 
       setRecentUsers((usersData ?? []) as RecentUser[]);
-
       setRecentSongs(
         (songsData ?? []).map((s: any) => ({
           id:              s.id,
@@ -138,7 +139,6 @@ export function DashboardPage() {
           author_username: s.profiles?.username ?? null,
         }))
       );
-
       setLastUpdate(new Date());
     } catch (e: any) {
       setError(e.message ?? "Ma'lumot yuklanmadi");
@@ -157,8 +157,8 @@ export function DashboardPage() {
     <div className="p-6 lg:p-8">
       <PageHeader
         icon={LayoutDashboard}
-        title="Dashboard"
-        subtitle="Tizim umumiy holati va asosiy ko'rsatkichlar"
+        title={t('dashboard_title')}
+        subtitle={t('dashboard_subtitle')}
         action={
           <button
             type="button"
@@ -167,7 +167,7 @@ export function DashboardPage() {
             className="flex items-center gap-2 rounded-lg border border-gold-900/40 bg-midnight-800/40 px-3 py-2 text-sm text-gold-300 hover:bg-midnight-700/40 disabled:opacity-50"
           >
             <RefreshCw className={cn('h-3.5 w-3.5', loading && 'animate-spin')} />
-            Yangilash
+            {t('refresh')}
           </button>
         }
       />
@@ -178,44 +178,41 @@ export function DashboardPage() {
         </div>
       )}
 
-      {/* Asosiy statistika — 4 ta karta */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           icon={Users}
-          label="Jami foydalanuvchilar"
+          label={t('dashboard_total_users')}
           value={stats ? stats.total_users : null}
-          delta={{ value: stats?.new_users_today ?? 0, label: "bugun" }}
+          delta={{ value: stats?.new_users_today ?? 0, label: t('dashboard_today') }}
           color="gold"
           loading={loading && !stats}
         />
         <StatCard
           icon={Music}
-          label="Bugungi qo'shiqlar"
+          label={t('dashboard_today_songs')}
           value={stats?.songs_today ?? 0}
-          delta={{ value: stats?.songs_total ?? 0, label: 'jami' }}
+          delta={{ value: stats?.songs_total ?? 0, label: t('dashboard_total') }}
           accent="emerald"
           loading={loading && !stats}
         />
         <StatCard
           icon={CreditCard}
-          label="Faol obunalar"
+          label={t('dashboard_active_subs')}
           value={stats?.active_subs ?? 0}
           accent="blue"
           loading={loading && !stats}
         />
         <StatCard
           icon={Sparkles}
-          label="Credit qoldig'i"
+          label={t('dashboard_credits_left')}
           value={stats?.total_credits_used ?? 0}
           accent="admin"
           loading={loading && !stats}
         />
       </div>
 
-      {/* Ikkinchi qator — ogohlantirishlar */}
       {stats && (
         <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
-          {/* Flagged qo'shiqlar */}
           <div className={cn(
             'flex items-center gap-3 rounded-xl border px-4 py-3',
             stats.songs_flagged > 0
@@ -224,14 +221,13 @@ export function DashboardPage() {
           )}>
             <Flag className={cn('h-5 w-5', stats.songs_flagged > 0 ? 'text-admin-400' : 'text-gold-700')} />
             <div>
-              <div className="text-xs uppercase tracking-wider text-gold-700">Flagged qoʻshiqlar</div>
+              <div className="text-xs uppercase tracking-wider text-gold-700">{t('dashboard_flagged_songs')}</div>
               <div className={cn('text-xl font-bold', stats.songs_flagged > 0 ? 'text-admin-300' : 'text-gold-100')}>
                 {stats.songs_flagged}
               </div>
             </div>
           </div>
 
-          {/* Yangi feedback */}
           <div className={cn(
             'flex items-center gap-3 rounded-xl border px-4 py-3',
             stats.feedback_new > 0
@@ -240,52 +236,45 @@ export function DashboardPage() {
           )}>
             <Bell className={cn('h-5 w-5', stats.feedback_new > 0 ? 'text-amber-400' : 'text-gold-700')} />
             <div>
-              <div className="text-xs uppercase tracking-wider text-gold-700">Yangi feedback</div>
+              <div className="text-xs uppercase tracking-wider text-gold-700">{t('dashboard_new_feedback')}</div>
               <div className={cn('text-xl font-bold', stats.feedback_new > 0 ? 'text-amber-300' : 'text-gold-100')}>
                 {stats.feedback_new}
               </div>
             </div>
           </div>
 
-          {/* Haftalik o'sish */}
           <div className="flex items-center gap-3 rounded-xl border border-gold-900/30 bg-midnight-900/40 px-4 py-3">
             <TrendingUp className="h-5 w-5 text-emerald-400" />
             <div>
-              <div className="text-xs uppercase tracking-wider text-gold-700">Haftalik oʻsish</div>
+              <div className="text-xs uppercase tracking-wider text-gold-700">{t('dashboard_weekly_growth')}</div>
               <div className="text-xl font-bold text-emerald-300">+{stats.new_users_week}</div>
             </div>
           </div>
         </div>
       )}
 
-      {/* So'nggi faoliyat — 2 ustun */}
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* So'nggi foydalanuvchilar */}
-        <div className="rounded-xl border border-gold-900/30 bg-midnight-900/40 overflow-hidden">
+        <div className="overflow-hidden rounded-xl border border-gold-900/30 bg-midnight-900/40">
           <div className="flex items-center justify-between border-b border-gold-900/30 bg-midnight-950/60 px-4 py-3">
             <div className="flex items-center gap-2 text-sm font-semibold text-gold-200">
               <Users className="h-3.5 w-3.5 text-admin-300" />
-              Soʻnggi royxatdan otganlar
+              {t('dashboard_recent_users')}
             </div>
             {lastUpdate && (
-              <span className="text-[10px] text-gold-700">
-                {timeAgo(lastUpdate.toISOString())}
-              </span>
+              <span className="text-[10px] text-gold-700">{timeAgo(lastUpdate.toISOString())}</span>
             )}
           </div>
-
           {loading && recentUsers.length === 0 ? (
             <div className="flex items-center justify-center py-10 text-gold-700">
               <Loader2 className="h-5 w-5 animate-spin" />
             </div>
           ) : recentUsers.length === 0 ? (
-            <div className="py-10 text-center text-sm text-gold-700">
-              Foydalanuvchilar yoʻq
-            </div>
+            <div className="py-10 text-center text-sm text-gold-700">{t('users_empty')}</div>
           ) : (
             <div className="divide-y divide-gold-900/20">
               {recentUsers.map(u => (
-                <div key={u.id} className="flex items-center gap-3 px-4 py-2.5 hover:bg-midnight-800/40 transition-colors">
+                <div key={u.id} className="flex items-center gap-3 px-4 py-2.5 transition-colors hover:bg-midnight-800/40">
                   <div className="grid h-8 w-8 shrink-0 place-items-center overflow-hidden rounded-full border border-gold-700/40 bg-gradient-gold-soft">
                     {u.avatar_url
                       ? <img src={u.avatar_url} alt="" className="h-full w-full object-cover" />
@@ -298,7 +287,7 @@ export function DashboardPage() {
                       {u.full_name || u.username || '—'}
                       {u.is_admin && (
                         <span className="ml-1.5 rounded bg-admin-500/20 px-1 py-0.5 text-[9px] font-bold uppercase text-admin-300">
-                          Admin
+                          {t('users_badge_admin')}
                         </span>
                       )}
                     </div>
@@ -315,31 +304,26 @@ export function DashboardPage() {
         </div>
 
         {/* So'nggi qo'shiqlar */}
-        <div className="rounded-xl border border-gold-900/30 bg-midnight-900/40 overflow-hidden">
+        <div className="overflow-hidden rounded-xl border border-gold-900/30 bg-midnight-900/40">
           <div className="flex items-center justify-between border-b border-gold-900/30 bg-midnight-950/60 px-4 py-3">
             <div className="flex items-center gap-2 text-sm font-semibold text-gold-200">
               <Music className="h-3.5 w-3.5 text-admin-300" />
-              Soʻnggi qoʻshiqlar
+              {t('dashboard_recent_songs')}
             </div>
             {lastUpdate && (
-              <span className="text-[10px] text-gold-700">
-                {timeAgo(lastUpdate.toISOString())}
-              </span>
+              <span className="text-[10px] text-gold-700">{timeAgo(lastUpdate.toISOString())}</span>
             )}
           </div>
-
           {loading && recentSongs.length === 0 ? (
             <div className="flex items-center justify-center py-10 text-gold-700">
               <Loader2 className="h-5 w-5 animate-spin" />
             </div>
           ) : recentSongs.length === 0 ? (
-            <div className="py-10 text-center text-sm text-gold-700">
-              Qoʻshiqlar yoʻq
-            </div>
+            <div className="py-10 text-center text-sm text-gold-700">{t('songs_empty')}</div>
           ) : (
             <div className="divide-y divide-gold-900/20">
               {recentSongs.map(s => (
-                <div key={s.id} className="flex items-center gap-3 px-4 py-2.5 hover:bg-midnight-800/40 transition-colors">
+                <div key={s.id} className="flex items-center gap-3 px-4 py-2.5 transition-colors hover:bg-midnight-800/40">
                   <div className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-gold-700/40 bg-midnight-800/60">
                     <Music className="h-3.5 w-3.5 text-gold-500" />
                   </div>
@@ -348,21 +332,14 @@ export function DashboardPage() {
                       {s.title || 'Untitled'}
                     </div>
                     <div className="truncate text-[11px] text-gold-700">
-                      {s.author_username
-                        ? `@${s.author_username}`
-                        : s.author_email || '—'}
+                      {s.author_username ? `@${s.author_username}` : s.author_email || '—'}
                     </div>
                   </div>
                   <div className="flex flex-col items-end gap-0.5">
-                    <span className={cn(
-                      'text-[10px] font-semibold uppercase',
-                      STATUS_COLOR[s.status ?? ''] ?? 'text-gold-700',
-                    )}>
+                    <span className={cn('text-[10px] font-semibold uppercase', STATUS_COLOR[s.status ?? ''] ?? 'text-gold-700')}>
                       {s.status ?? '—'}
                     </span>
-                    <span className="text-[10px] text-gold-700">
-                      {timeAgo(s.created_at)}
-                    </span>
+                    <span className="text-[10px] text-gold-700">{timeAgo(s.created_at)}</span>
                   </div>
                 </div>
               ))}
@@ -371,11 +348,10 @@ export function DashboardPage() {
         </div>
       </div>
 
-      {/* Auto-refresh info */}
       <div className="mt-4 flex items-center gap-2 text-[11px] text-gold-700/60">
         <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
-        Real-time · 30 soniyada avtomatik yangilanadi
-        {lastUpdate && ` · So'nggi: ${lastUpdate.toLocaleTimeString('uz-UZ')}`}
+        Real-time · 30s
+        {lastUpdate && ` · ${lastUpdate.toLocaleTimeString()}`}
       </div>
     </div>
   );
