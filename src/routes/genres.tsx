@@ -196,7 +196,7 @@ export function GenresPage() {
                   lang === l.value
                     ? 'bg-gold-500/15 text-gold-300 ring-1 ring-gold-500/30'
                     : 'text-gold-300/70 hover:bg-midnight-700/40 hover:text-gold-100')}>
-                <span className="text-base leading-none">{l.flag}</span>
+                <span className="text-base">{l.flag}</span>
                 {l.value.toUpperCase()}
               </button>
             ))}
