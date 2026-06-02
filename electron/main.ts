@@ -1,4 +1,4 @@
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, net } from 'electron';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { secureStorage } from './secure-storage';
@@ -70,14 +70,13 @@ ipcMain.handle('secure:resetAll',      () => secureStorage.resetAll());
 ipcMain.handle('app:get-geo', (_e, ip: string) => {
   return new Promise((resolve) => {
     console.log('[geo] IP:', ip);
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const http = require('http');
-    // ip-api.com — tekin, tezkor, HTTPS shart emas
+    // Electron net module — CSP yoq, https/http ishlaydi
     const url = 'http://ip-api.com/json/' + ip +
       '?fields=status,country,countryCode,regionName,city,zip,lat,lon,timezone,isp,org';
-    const req = http.get(url, (res: any) => {
-      let raw = '';
-      res.on('data', (c: string) => { raw += c; });
+    const req = net.request(url);
+    let raw = '';
+    req.on('response', (res) => {
+      res.on('data', (chunk) => { raw += chunk.toString(); });
       res.on('end', () => {
         try {
           const d = JSON.parse(raw);
@@ -101,7 +100,8 @@ ipcMain.handle('app:get-geo', (_e, ip: string) => {
       console.log('[geo] Xato:', e.message);
       resolve(null);
     });
-    req.setTimeout(8000, () => { req.destroy(); resolve(null); });
+    setTimeout(() => { try { req.abort(); } catch {} resolve(null); }, 8000);
+    req.end();
   });
 });
 

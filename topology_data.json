@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-05-23T13:23:25.377988",
+  "generated_at": "2026-05-26T06:41:08.792073",
   "total_files": 42,
   "active_files": 40,
   "placeholder_files": 2,
   "broken_imports": 0,
-  "supabase_issues": 16,
-  "syntax_issues": 26,
+  "supabase_issues": 17,
+  "syntax_issues": 23,
   "unused_exports": 15,
   "files": [
     {
       "name": "main",
       "rel": "electron/main.ts",
-      "size": 4403,
+      "size": 5230,
       "active": true,
       "issues": {
         "broken": [],
@@ -77,12 +77,15 @@
     {
       "name": "multi-account-tab",
       "rel": "src/components/analytics/multi-account-tab.tsx",
-      "size": 15562,
+      "size": 18482,
       "active": true,
       "issues": {
         "broken": [],
         "supabase": [],
-        "syntax": []
+        "syntax": [
+          "'(' yopilmagan (7 ta, qatorlar: [143, 205, 207])",
+          "'{' yopilmagan (6 ta, qatorlar: [53, 197, 207])"
+        ]
       }
     },
     {
@@ -170,14 +173,18 @@
     {
       "name": "plan-editor-modal",
       "rel": "src/components/subscriptions/plan-editor-modal.tsx",
-      "size": 18938,
+      "size": 19689,
       "active": true,
       "issues": {
         "broken": [],
         "supabase": [
-          "Qator 173: supabase.from() → try-catch yoki .catch() ichida emas"
+          "Qator 133: supabase.from() → try-catch yoki .catch() ichida emas",
+          "Qator 134: supabase.from() → try-catch yoki .catch() ichida emas"
         ],
-        "syntax": []
+        "syntax": [
+          "'(' yopilmagan (1 ta, qatorlar: [142])",
+          "'{' yopilmagan (1 ta, qatorlar: [71])"
+        ]
       }
     },
     {
@@ -238,20 +245,16 @@
     {
       "name": "user-details-modal",
       "rel": "src/components/users/user-details-modal.tsx",
-      "size": 28293,
+      "size": 28497,
       "active": true,
       "issues": {
         "broken": [],
         "supabase": [
-          "Qator 550: supabase.rpc() → try-catch yoki .catch() ichida emas",
-          "Qator 575: supabase.rpc() → try-catch yoki .catch() ichida emas",
-          "Qator 600: supabase.rpc() → try-catch yoki .catch() ichida emas"
+          "Qator 556: supabase.rpc() → try-catch yoki .catch() ichida emas",
+          "Qator 581: supabase.rpc() → try-catch yoki .catch() ichida emas",
+          "Qator 606: supabase.rpc() → try-catch yoki .catch() ichida emas"
         ],
-        "syntax": [
-          "Qator 276: ortiqcha ')' (juftisiz yopuvchi)",
-          "Qator 279: ortiqcha '}' (juftisiz yopuvchi)",
-          "Qator 279: ortiqcha ')' (juftisiz yopuvchi)"
-        ]
+        "syntax": []
       }
     },
     {
@@ -361,14 +364,14 @@
     {
       "name": "countries",
       "rel": "src/routes/countries.tsx",
-      "size": 20992,
+      "size": 21899,
       "active": true,
       "issues": {
         "broken": [],
         "supabase": [],
         "syntax": [
-          "'(' yopilmagan (8 ta, qatorlar: [269, 343, 345])",
-          "'{' yopilmagan (7 ta, qatorlar: [115, 331, 345])"
+          "'(' yopilmagan (8 ta, qatorlar: [295, 369, 371])",
+          "'{' yopilmagan (7 ta, qatorlar: [115, 357, 371])"
         ]
       }
     },

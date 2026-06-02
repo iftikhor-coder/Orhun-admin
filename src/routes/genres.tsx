@@ -12,11 +12,11 @@ import { cn, timeAgo } from '@/lib/utils';
 
 type Lang = 'uz' | 'en' | 'tr' | 'az';
 
-const LANGS: { value: Lang; flag: string }[] = [
-  { value: 'uz', flag: '🇺🇿' },
-  { value: 'en', flag: '🇬🇧' },
-  { value: 'tr', flag: '🇹🇷' },
-  { value: 'az', flag: '🇦🇿' },
+const LANGS: { value: Lang; label: string; flag: string }[] = [
+  { value: 'uz', label: 'UZ', flag: 'https://flagcdn.com/w20/uz.png' },
+  { value: 'en', label: 'EN', flag: 'https://flagcdn.com/w20/gb.png' },
+  { value: 'tr', label: 'TR', flag: 'https://flagcdn.com/w20/tr.png' },
+  { value: 'az', label: 'AZ', flag: 'https://flagcdn.com/w20/az.png' },
 ];
 
 export function GenresPage() {
@@ -196,8 +196,8 @@ export function GenresPage() {
                   lang === l.value
                     ? 'bg-gold-500/15 text-gold-300 ring-1 ring-gold-500/30'
                     : 'text-gold-300/70 hover:bg-midnight-700/40 hover:text-gold-100')}>
-                <span className="text-base leading-none">{l.flag}</span>
-                {l.value.toUpperCase()}
+                <img src={l.flag} alt={l.label} className="h-4 w-5 rounded-sm object-cover" />
+                {l.label}
               </button>
             ))}
           </div>

@@ -10,7 +10,7 @@ interface Props {
   title: string;
   message: string;
   actionUrl?: string | null;
-  lang: 'uz' | 'en' | 'ru' | 'tr';
+  lang: 'uz' | 'en' | 'az' | 'tr';
 }
 
 const TYPE_META: Record<
@@ -19,47 +19,44 @@ const TYPE_META: Record<
     icon: React.ComponentType<{ className?: string }>;
     colorRing: string;
     colorIcon: string;
-    labelByLang: Record<'uz' | 'en' | 'ru' | 'tr', string>;
+    labelByLang: Record<'uz' | 'en' | 'az' | 'tr', string>;
   }
 > = {
   admin_announcement: {
     icon: Megaphone,
     colorRing: 'ring-amber-500/30 bg-amber-500/10',
     colorIcon: 'text-amber-400',
-    labelByLang: { uz: 'Eʼlon', en: 'Announcement', ru: 'Объявление', tr: 'Duyuru' },
+    labelByLang: { uz: 'Eʼlon', en: 'Announcement', az: 'Elan', tr: 'Duyuru' },
   },
   update: {
     icon: RefreshCcw,
     colorRing: 'ring-blue-500/30 bg-blue-500/10',
     colorIcon: 'text-blue-400',
-    labelByLang: { uz: 'Yangilanish', en: 'Update', ru: 'Обновление', tr: 'Güncelleme' },
+    labelByLang: { uz: 'Yangilanish', en: 'Update', az: 'Yeniləmə', tr: 'Güncelleme' },
   },
   warning: {
     icon: AlertTriangle,
     colorRing: 'ring-admin-500/30 bg-admin-500/10',
     colorIcon: 'text-admin-400',
-    labelByLang: { uz: 'Ogohlantirish', en: 'Warning', ru: 'Внимание', tr: 'Uyarı' },
+    labelByLang: { uz: 'Ogohlantirish', en: 'Warning', az: 'Xəbərdarlıq', tr: 'Uyarı' },
   },
   credits_refreshed: {
     icon: Sparkles,
     colorRing: 'ring-emerald-500/30 bg-emerald-500/10',
     colorIcon: 'text-emerald-400',
-    labelByLang: { uz: 'Credits', en: 'Credits', ru: 'Кредиты', tr: 'Krediler' },
+    labelByLang: { uz: 'Credits', en: 'Credits', az: 'Kreditlər', tr: 'Krediler' },
   },
 };
 
-const FLAG: Record<'uz' | 'en' | 'ru' | 'tr', string> = {
-  uz: '🇺🇿',
-  en: '🇬🇧',
-  ru: '🇷🇺',
-  tr: '🇹🇷',
+const FLAG: Record<'uz' | 'en' | 'az' | 'tr', string> = {
+  uz: 'https://flagcdn.com/w20/uz.png',
+  en: 'https://flagcdn.com/w20/gb.png',
+  az: 'https://flagcdn.com/w20/az.png',
+  tr: 'https://flagcdn.com/w20/tr.png',
 };
 
-const LANG_NAME: Record<'uz' | 'en' | 'ru' | 'tr', string> = {
-  uz: "O'zbekcha",
-  en: 'English',
-  ru: 'Русский',
-  tr: 'Türkçe',
+const LANG_NAME: Record<'uz' | 'en' | 'az' | 'tr', string> = {
+  uz: "O'zbekcha", en: 'English', az: 'Azərbaycanca', tr: 'Türkçe',
 };
 
 /**
@@ -75,7 +72,7 @@ export function PreviewCard({ type, title, message, actionUrl, lang }: Props) {
       {/* Lang header */}
       <div className="flex items-center justify-between border-b border-gold-900/30 bg-midnight-950/60 px-3 py-2">
         <div className="flex items-center gap-2 text-xs font-medium text-gold-300">
-          <span className="text-base leading-none">{FLAG[lang]}</span>
+          <img src={FLAG[lang]} alt={lang} className="h-4 w-5 rounded-sm object-cover" />
           {LANG_NAME[lang]}
         </div>
         <span className="text-[10px] uppercase tracking-wider text-gold-700">

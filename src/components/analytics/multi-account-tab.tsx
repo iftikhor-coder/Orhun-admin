@@ -1,12 +1,31 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   AlertTriangle, Loader2, ChevronDown, ChevronRight, Ban,
-  Globe, Smartphone, Shield, RefreshCw, Check,
+  Globe, Smartphone, Shield, RefreshCw, Check, ExternalLink,
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { Modal } from '@/components/ui/modal';
 import { Badge } from '@/components/ui/badge';
-import { formatDate, timeAgo, cn } from '@/lib/utils';
+import { formatDate, cn } from '@/lib/utils';
+
+function parseUA(ua: string | null | undefined): string {
+  if (!ua) return '—';
+  let browser = 'Browser';
+  let os = 'OS';
+  if      (ua.includes('Chrome') && !ua.includes('Edg')) browser = 'Chrome';
+  else if (ua.includes('Firefox'))                        browser = 'Firefox';
+  else if (ua.includes('Safari') && !ua.includes('Chrome')) browser = 'Safari';
+  else if (ua.includes('Edg'))                            browser = 'Edge';
+  else if (ua.includes('OPR') || ua.includes('Opera'))   browser = 'Opera';
+  if      (ua.includes('iPhone'))        os = 'iPhone';
+  else if (ua.includes('iPad'))          os = 'iPad';
+  else if (ua.includes('Android'))       os = 'Android';
+  else if (ua.includes('Windows NT 10')) os = 'Win 10/11';
+  else if (ua.includes('Mac OS X'))      os = 'macOS';
+  else if (ua.includes('Linux'))         os = 'Linux';
+  return `${browser} / ${os}`;
+}
 
 interface AccountInfo {
   id: string;
@@ -19,6 +38,7 @@ interface AccountInfo {
   created_at: string;
   last_country: string | null;
   device_id?: string | null;
+  user_agent?: string | null;
   last_ip?: string | null;
   last_sign_in_at: string | null;
 }
@@ -31,18 +51,19 @@ interface DuplicateGroup {
 }
 
 export function MultiAccountTab() {
-  const [groups,    setGroups]    = useState<DuplicateGroup[]>([]);
-  const [loading,   setLoading]   = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const [expanded,  setExpanded]  = useState<Set<string>>(new Set());
-  const [error,     setError]     = useState('');
-  const [success,   setSuccess]   = useState('');
+  const navigate = useNavigate();
 
-  // Ban modal state
-  const [banUser,    setBanUser]    = useState<AccountInfo | null>(null);
-  const [banDevice,  setBanDevice]  = useState<string | null>(null);
-  const [banReason,  setBanReason]  = useState('');
-  const [banning,    setBanning]    = useState(false);
+  const [groups,     setGroups]     = useState<DuplicateGroup[]>([]);
+  const [loading,    setLoading]    = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [expanded,   setExpanded]   = useState<Set<string>>(new Set());
+  const [error,      setError]      = useState('');
+  const [success,    setSuccess]    = useState('');
+
+  const [banUser,   setBanUser]   = useState<AccountInfo | null>(null);
+  const [banDevice, setBanDevice] = useState<string | null>(null);
+  const [banReason, setBanReason] = useState('');
+  const [banning,   setBanning]   = useState(false);
 
   const load = async (silent = false) => {
     if (!silent) setLoading(true); else setRefreshing(true);
@@ -50,7 +71,10 @@ export function MultiAccountTab() {
     try {
       const { data, error } = await supabase.rpc('admin_detect_multi_accounts');
       if (error) throw error;
-      setGroups((data as DuplicateGroup[]) ?? []);
+      const parsed: DuplicateGroup[] = Array.isArray(data)
+        ? data
+        : (data ? (data as any) : []);
+      setGroups(parsed);
     } catch (e: any) {
       setError(e.message);
     } finally {
@@ -73,6 +97,10 @@ export function MultiAccountTab() {
   };
 
   const risk = (n: number) => n >= 5 ? 'high' : n >= 3 ? 'medium' : 'low';
+
+  const openUserModal = (userId: string) => {
+    navigate('/users', { state: { openUserId: userId } });
+  };
 
   const handleBanUser = async () => {
     if (!banUser || !banReason.trim()) return;
@@ -102,7 +130,7 @@ export function MultiAccountTab() {
         p_reason: banReason,
       });
       if (error) throw error;
-      flash(`✅ Qurilma banlandi — shu qurilmadagi barcha akkauntlar ham`);
+      flash('✅ Qurilma banlandi — shu qurilmadagi barcha akkauntlar ham');
       setBanDevice(null); setBanReason('');
       load(true);
     } catch (e: any) {
@@ -114,7 +142,6 @@ export function MultiAccountTab() {
 
   return (
     <div className="space-y-4">
-      {/* Header */}
       <div className="flex items-center justify-between gap-3 rounded-xl border border-admin-900/40 bg-admin-950/20 px-4 py-3">
         <div className="flex items-center gap-3">
           <AlertTriangle className="h-5 w-5 text-admin-400" />
@@ -143,7 +170,6 @@ export function MultiAccountTab() {
         </div>
       )}
 
-      {/* Risk statistikasi */}
       <div className="grid grid-cols-3 gap-3">
         <div className="rounded-xl border border-admin-900/40 bg-admin-950/10 p-3">
           <div className="text-[10px] uppercase tracking-wider text-admin-300">🚨 Yuqori risk</div>
@@ -168,7 +194,6 @@ export function MultiAccountTab() {
         </div>
       </div>
 
-      {/* Guruhlar */}
       {loading ? (
         <div className="flex items-center justify-center py-20 text-gold-700">
           <Loader2 className="h-6 w-6 animate-spin" />
@@ -180,9 +205,11 @@ export function MultiAccountTab() {
       ) : (
         <div className="space-y-2">
           {groups.map(g => {
-            const key = `${g.group_type}:${g.group_value}`;
+            const key  = `${g.group_type}:${g.group_value}`;
             const open = expanded.has(key);
-            const r = risk(g.account_count);
+            const r    = risk(g.account_count);
+            const accs = g.accounts ?? [];
+
             return (
               <div key={key} className={cn(
                 'overflow-hidden rounded-xl border transition-all',
@@ -192,7 +219,9 @@ export function MultiAccountTab() {
               )}>
                 <button type="button" onClick={() => toggle(key)}
                   className="flex w-full items-center gap-3 px-4 py-3 text-left hover:bg-midnight-800/30">
-                  {open ? <ChevronDown className="h-4 w-4 text-gold-700" /> : <ChevronRight className="h-4 w-4 text-gold-700" />}
+                  {open
+                    ? <ChevronDown className="h-4 w-4 text-gold-700" />
+                    : <ChevronRight className="h-4 w-4 text-gold-700" />}
                   <div className="grid h-8 w-8 place-items-center rounded-lg bg-midnight-800/60">
                     {g.group_type === 'ip'
                       ? <Globe className="h-3.5 w-3.5 text-blue-400" />
@@ -201,14 +230,25 @@ export function MultiAccountTab() {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <span className="text-xs uppercase tracking-wider text-gold-700">
-                        {g.group_type === 'ip' ? 'IP manzil' : 'Qurilma ID'}
+                        {g.group_type === 'ip' ? 'IP manzil' : 'Qurilma fingerprint'}
                       </span>
                       {r === 'high'   && <Badge variant="admin">🚨 YUQORI RISK</Badge>}
                       {r === 'medium' && <Badge variant="amber">⚠️ Oʻrtacha</Badge>}
                     </div>
-                    <div className="font-mono text-sm text-gold-100">{g.group_value || '—'}</div>
+                    <div className="font-mono text-sm text-gold-100 truncate">
+                      {g.group_value
+                        ? g.group_type === 'device'
+                          ? g.group_value.slice(0, 24) + '...'
+                          : g.group_value
+                        : '—'}
+                    </div>
+                    {g.group_type === 'device' && accs[0]?.user_agent && (
+                      <div className="text-[10px] text-gold-700/60 mt-0.5">
+                        {parseUA(accs[0].user_agent)}
+                      </div>
+                    )}
                   </div>
-                  <div className="text-right">
+                  <div className="text-right shrink-0">
                     <div className="font-display text-2xl font-bold text-gold-100">{g.account_count}</div>
                     <div className="text-[10px] text-gold-700">akkaunt</div>
                   </div>
@@ -216,22 +256,32 @@ export function MultiAccountTab() {
 
                 {open && (
                   <div className="border-t border-gold-900/30 bg-midnight-950/30">
-                    {/* Qurilma ban tugmasi */}
-                    {g.group_type === 'device' && (
-                      <div className="border-b border-gold-900/30 bg-admin-950/10 px-4 py-2">
-                        <button type="button" onClick={() => { setBanDevice(g.group_value); setBanReason(''); }}
-                          className="flex items-center gap-2 rounded-md bg-gradient-admin px-3 py-1.5 text-xs font-semibold text-white shadow-lg hover:scale-[1.02]">
-                          <Ban className="h-3 w-3" />
-                          Qurilmani butunlay ban qilish ({g.account_count} ta akkaunt)
-                        </button>
-                        <p className="mt-1 text-[10px] text-gold-700">
-                          Bu qurilmadan Google orqali ham qayta royxatdan otolmaydi (frontend tekshiruvi bilan)
-                        </p>
+                    {g.group_type === 'device' && g.group_value && (
+                      <div className="border-b border-gold-900/30 bg-admin-950/10 px-4 py-2 flex items-center justify-between gap-3">
+                        <div>
+                          <button type="button"
+                            onClick={() => { setBanDevice(g.group_value); setBanReason(''); }}
+                            className="flex items-center gap-2 rounded-md bg-gradient-admin px-3 py-1.5 text-xs font-semibold text-white shadow-lg hover:scale-[1.02]">
+                            <Ban className="h-3 w-3" />
+                            Qurilmani butunlay ban ({g.account_count} ta akkaunt)
+                          </button>
+                          <p className="mt-1 text-[10px] text-gold-700">
+                            VPN, yangi Gmail — Oracle server bloklaydi
+                          </p>
+                        </div>
+                        {accs[0]?.user_agent && (
+                          <div className="text-right shrink-0">
+                            <div className="text-[10px] text-gold-700">Qurilma</div>
+                            <div className="text-xs font-medium text-gold-300">
+                              {parseUA(accs[0].user_agent)}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
-                    {/* Akkauntlar ro'yxati */}
+
                     <div className="divide-y divide-gold-900/20">
-                      {g.accounts.map(acc => (
+                      {accs.map(acc => (
                         <div key={acc.id}
                           className="flex items-center gap-3 px-4 py-2.5 hover:bg-midnight-800/40">
                           <div className="grid h-8 w-8 shrink-0 place-items-center overflow-hidden rounded-full border border-gold-700/40 bg-gradient-gold-soft">
@@ -246,22 +296,31 @@ export function MultiAccountTab() {
                               <span className="truncate text-sm font-medium text-gold-100">
                                 {acc.full_name || acc.email || '—'}
                               </span>
-                              {acc.is_admin && <Shield className="h-3 w-3 text-admin-400" />}
+                              {acc.is_admin  && <Shield className="h-3 w-3 text-admin-400" />}
                               {acc.is_banned && <Badge variant="admin">Banned</Badge>}
                             </div>
-                            <div className="truncate text-xs text-gold-700">
-                              {acc.email} · {formatDate(acc.created_at)}
-                              {acc.last_country && ` · ${acc.last_country}`}
+                            <div className="flex flex-wrap items-center gap-1.5 text-xs text-gold-700">
+                              <span>{acc.email}</span>
+                              <span>·</span>
+                              <span>{formatDate(acc.created_at)}</span>
+                              {acc.last_country && <><span>·</span><span>🌍 {acc.last_country}</span></>}
+                              {acc.user_agent  && <><span>·</span><span>💻 {parseUA(acc.user_agent)}</span></>}
                             </div>
                           </div>
-                          {/* Ban tugmasi (faqat banlanmagan va admin emas uchun) */}
-                          {!acc.is_banned && !acc.is_admin && (
+                          <div className="flex items-center gap-1.5 shrink-0">
                             <button type="button"
-                              onClick={() => { setBanUser(acc); setBanReason('Multi-account violation'); }}
-                              className="shrink-0 rounded-md bg-admin-500/15 px-2 py-1 text-[10px] font-semibold text-admin-300 hover:bg-admin-500/25">
-                              <Ban className="inline h-3 w-3 mr-1" />Ban
+                              onClick={() => openUserModal(acc.id)}
+                              className="rounded-md bg-gold-500/10 px-2 py-1 text-[10px] font-semibold text-gold-300 hover:bg-gold-500/20">
+                              <ExternalLink className="inline h-3 w-3 mr-1" />Ko'rish
                             </button>
-                          )}
+                            {!acc.is_banned && !acc.is_admin && (
+                              <button type="button"
+                                onClick={() => { setBanUser(acc); setBanReason('Multi-account violation'); }}
+                                className="rounded-md bg-admin-500/15 px-2 py-1 text-[10px] font-semibold text-admin-300 hover:bg-admin-500/25">
+                                <Ban className="inline h-3 w-3 mr-1" />Ban
+                              </button>
+                            )}
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -273,17 +332,18 @@ export function MultiAccountTab() {
         </div>
       )}
 
-      {/* User ban modal */}
       {banUser && (
         <Modal open={!!banUser} onClose={() => { setBanUser(null); setBanReason(''); }}
-          width="sm" title="Foydalanuvchini ban qilish" subtitle={banUser.email || banUser.id}
+          width="sm" title="Foydalanuvchini ban qilish"
+          subtitle={banUser.email || banUser.id}
           footer={
             <div className="flex justify-end gap-2">
               <button type="button" onClick={() => setBanUser(null)} disabled={banning}
                 className="rounded-lg bg-midnight-700/40 px-4 py-2 text-sm text-gold-100/80 hover:bg-midnight-700/60 disabled:opacity-50">
                 Bekor
               </button>
-              <button type="button" onClick={handleBanUser} disabled={banning || !banReason.trim()}
+              <button type="button" onClick={handleBanUser}
+                disabled={banning || !banReason.trim()}
                 className="flex items-center gap-2 rounded-lg bg-gradient-admin px-4 py-2 text-sm font-semibold text-white shadow-lg hover:scale-[1.02] disabled:opacity-50">
                 {banning ? <Loader2 className="h-4 w-4 animate-spin" /> : <Ban className="h-4 w-4" />}
                 Ban qilish
@@ -298,18 +358,18 @@ export function MultiAccountTab() {
         </Modal>
       )}
 
-      {/* Device ban modal */}
       {banDevice && (
         <Modal open={!!banDevice} onClose={() => { setBanDevice(null); setBanReason(''); }}
           width="md" title="Qurilmani ban qilish"
-          subtitle={banDevice.slice(0, 32) + '...'}
+          subtitle={banDevice.length > 32 ? banDevice.slice(0, 32) + '...' : banDevice}
           footer={
             <div className="flex justify-end gap-2">
               <button type="button" onClick={() => setBanDevice(null)} disabled={banning}
                 className="rounded-lg bg-midnight-700/40 px-4 py-2 text-sm text-gold-100/80 hover:bg-midnight-700/60 disabled:opacity-50">
                 Bekor
               </button>
-              <button type="button" onClick={handleBanDevice} disabled={banning || !banReason.trim()}
+              <button type="button" onClick={handleBanDevice}
+                disabled={banning || !banReason.trim()}
                 className="flex items-center gap-2 rounded-lg bg-gradient-admin px-4 py-2 text-sm font-semibold text-white shadow-lg hover:scale-[1.02] disabled:opacity-50">
                 {banning ? <Loader2 className="h-4 w-4 animate-spin" /> : <Ban className="h-4 w-4" />}
                 Qurilmani ban
@@ -318,7 +378,8 @@ export function MultiAccountTab() {
           }>
           <div className="space-y-3 p-5">
             <div className="rounded-lg border border-admin-900/40 bg-admin-950/20 p-3 text-sm text-admin-200">
-              ⚠️ Bu qurilmadagi <strong>barcha akkauntlar banlanadi</strong>. DB ga yoziladi.
+              ⚠️ Bu qurilmadagi <strong>barcha akkauntlar banlanadi</strong>.
+              VPN ishlatsa ham, yangi Gmail ochsa ham — Oracle server bloklaydi.
             </div>
             <input type="text" value={banReason} onChange={e => setBanReason(e.target.value)}
               placeholder="Ban sababi (majburiy)..."

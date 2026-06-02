@@ -13,7 +13,7 @@ import { formatDateTime, timeAgo, cn } from '@/lib/utils';
 
 type BroadcastType = 'admin_announcement' | 'update' | 'warning' | 'credits_refreshed';
 type Target = 'all' | 'active' | 'admins';
-type Lang = 'uz' | 'en' | 'ru' | 'tr';
+type Lang = 'uz' | 'en' | 'az' | 'tr';
 
 interface BroadcastHistoryRow {
   id: string;
@@ -21,11 +21,11 @@ interface BroadcastHistoryRow {
   type: string;
   title_uz: string;
   title_en: string | null;
-  title_ru: string | null;
+  title_az: string | null;
   title_tr: string | null;
   message_uz: string;
   message_en: string | null;
-  message_ru: string | null;
+  message_az: string | null;
   message_tr: string | null;
   action_url: string | null;
   recipients_count: number;
@@ -47,10 +47,10 @@ const TARGETS: { value: Target; label: string; description: string }[] = [
 ];
 
 const LANGS: { value: Lang; flag: string; name: string }[] = [
-  { value: 'uz', flag: '🇺🇿', name: "O'zbekcha (majburiy)" },
-  { value: 'en', flag: '🇬🇧', name: 'English' },
-  { value: 'ru', flag: '🇷🇺', name: 'Русский' },
-  { value: 'tr', flag: '🇹🇷', name: 'Türkçe' },
+  { value: 'uz', flag: 'https://flagcdn.com/w20/uz.png', name: "O'zbekcha (majburiy)" },
+  { value: 'en', flag: 'https://flagcdn.com/w20/gb.png', name: 'English' },
+  { value: 'az', flag: 'https://flagcdn.com/w20/az.png', name: 'Azərbaycanca' },
+  { value: 'tr', flag: 'https://flagcdn.com/w20/tr.png', name: 'Türkçe' },
 ];
 
 export function NotificationsPage() {
@@ -61,8 +61,8 @@ export function NotificationsPage() {
   const [sendEmail, setSendEmail] = useState(false);
 
   // 4 til
-  const [titles, setTitles] = useState<Record<Lang, string>>({ uz: '', en: '', ru: '', tr: '' });
-  const [messages, setMessages] = useState<Record<Lang, string>>({ uz: '', en: '', ru: '', tr: '' });
+  const [titles, setTitles] = useState<Record<Lang, string>>({ uz: '', en: '', az: '', tr: '' });
+  const [messages, setMessages] = useState<Record<Lang, string>>({ uz: '', en: '', az: '', tr: '' });
   const [activeLang, setActiveLang] = useState<Lang>('uz');
 
   // Recipients count (live)
@@ -122,11 +122,11 @@ export function NotificationsPage() {
       p_type: type,
       p_title_uz: titles.uz.trim(),
       p_title_en: titles.en.trim() || null,
-      p_title_ru: titles.ru.trim() || null,
+      p_title_az: titles.az.trim() || null,
       p_title_tr: titles.tr.trim() || null,
       p_message_uz: messages.uz.trim(),
       p_message_en: messages.en.trim() || null,
-      p_message_ru: messages.ru.trim() || null,
+      p_message_az: messages.az.trim() || null,
       p_message_tr: messages.tr.trim() || null,
       p_action_url: actionUrl.trim() || null,
       p_send_email: sendEmail,
@@ -256,7 +256,7 @@ export function NotificationsPage() {
                         : 'text-gold-300/70 hover:bg-midnight-700/40 hover:text-gold-100',
                     )}
                   >
-                    <span className="text-base leading-none">{l.flag}</span>
+                    <img src={l.flag} alt={l.value} className="h-4 w-5 rounded-sm object-cover" />
                     <span>{l.value.toUpperCase()}</span>
                     {required && (
                       <span className="text-[9px] text-admin-400">*</span>
@@ -517,7 +517,7 @@ export function NotificationsPage() {
                 return (
                   <div key={l.value} className="rounded-lg border border-gold-900/30 bg-midnight-800/40 p-3">
                     <div className="mb-1 flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-gold-700">
-                      <span className="text-base leading-none">{l.flag}</span>
+                      <img src={l.flag} alt={l.value} className="h-4 w-5 rounded-sm object-cover" />
                       {l.value.toUpperCase()}
                     </div>
                     <h4 className="text-sm font-semibold text-gold-100">{title}</h4>

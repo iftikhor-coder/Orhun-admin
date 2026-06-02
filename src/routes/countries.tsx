@@ -138,7 +138,7 @@ export function CountriesPage() {
         .limit(50);
 
       if (!profiles || profiles.length === 0) {
-        setError("IP yozilgan profillar topilmadi yoki hammasi to'ldirilgan");
+        setError("IP yozilgan profillar topilmadi yoki hammasi to\'ldirilgan");
         setDetecting(false);
         return;
       }
@@ -146,14 +146,18 @@ export function CountriesPage() {
       const uniqueIPs = [...new Set((profiles as any[]).map((p: any) => p.last_ip).filter(Boolean))];
       const ipCountry: Record<string, string> = {};
 
+      // electronAPI.getGeo IPC orqali (CSP cheklovisiz)
+      const getGeo = window.electronAPI?.getGeo;
+
       for (let i = 0; i < uniqueIPs.length; i++) {
         const ip = uniqueIPs[i] as string;
         setDetectProgress((i + 1) + '/' + uniqueIPs.length);
         try {
-          const res = await fetch('https://ipapi.co/' + ip + '/json/');
-          const data = await res.json();
-          if (data.country_name) ipCountry[ip] = data.country_name;
-          await new Promise(r => setTimeout(r, 350));
+          if (typeof getGeo === 'function') {
+            const geo = await getGeo(ip);
+            if (geo?.country_name) ipCountry[ip] = geo.country_name;
+          }
+          await new Promise(r => setTimeout(r, 300));
         } catch { /* ignore */ }
       }
 
@@ -166,8 +170,30 @@ export function CountriesPage() {
         }
       }
 
-      alert('Tayyor! ' + updated + ' ta profil yangilandi. Sahifa yangilanadi...');
-      window.location.reload();
+      setDetectProgress('');
+      if (updated > 0) {
+        // Sahifani qayta yuklamasdan, state ni yangilaymiz
+        setError('');
+        // Davlatlarni qayta yuklaymiz
+        const { data } = await supabase
+          .from('profiles')
+          .select('last_country')
+          .not('last_country', 'is', null);
+        const counts: Record<string, number> = {};
+        (data ?? []).forEach((r: any) => {
+          if (r.last_country) {
+            const key = normalizeCountry(r.last_country.trim());
+            counts[key] = (counts[key] ?? 0) + 1;
+          }
+        });
+        setCountries(prev => prev.map(c => ({
+          ...c,
+          count: counts[c.name] ?? 0,
+        })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name)));
+        alert(updated + ' ta profil yangilandi!');
+      } else {
+        alert('Yangilanadigan profil topilmadi. Ular allaqachon aniqlanganmi yoki getGeo ishlamayaptimi?');
+      }
     } catch (e: any) {
       setError(e.message ?? 'Xato');
     } finally {
@@ -292,7 +318,7 @@ export function CountriesPage() {
           <div className="text-[10px] uppercase tracking-wider text-gold-700">Eng ko'p</div>
           <div className="mt-1 font-display text-base font-bold text-gold-100 truncate">
             {countries[0]?.count > 0
-              ? `${countries[0].flag} ${countries[0].name} (${countries[0].count})`
+              ? `${countries[0].name} (${countries[0].count})`
               : '—'}
           </div>
         </div>
